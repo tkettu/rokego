@@ -1,0 +1,1 @@
+web: gunicorn distance_tracker.wsgi --log-file -

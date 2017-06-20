@@ -1,0 +1,27 @@
+{% extends "distances/base.html" %}
+{% load bootstrap3 %}
+
+{% block header %}
+    <h2>Log in.</h2>
+{% endblock header %}  
+
+{% block content %}
+  
+  <form method="post" action="{% url 'users:login' %}" class="form">
+    {% csrf_token %}
+	
+    {% bootstrap_form form %}
+	
+	{% buttons %}
+	  <button name="submit" class="btn btn-primary">log in</button>
+	  
+	 <!--  <a class="btn btn-large btn-info" href="{% url 'users:password_reset' %}">Forgot password?</a>-->
+	 
+	  
+	{% endbuttons %}
+  
+    <input type="hidden" name="next" value="{% url 'distances:exercises' %}" />
+  </form>
+  <p><a href="{% url 'users:password_reset' %}">Lost password?</a></p>
+  <!--<a href='\registration\password_reset'>Forgot password</a>-->
+{% endblock content %}

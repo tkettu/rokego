@@ -1,0 +1,21 @@
+{% extends "distances/base.html" %}
+
+{% block header %}
+  <h2><a href="{% url 'distances:exercises' %}">Exercises</a></h2>
+{% endblock header %}
+  
+{% block content %}
+  <ul>
+    <ul>
+     {% for exerci in exercise %}
+	   <li> <h3>{{ exerci }}</h3> </li>
+	 {% empty %}
+	    No exercises recorded yet.
+	 {% endfor %}
+	 <h3>Total: {{ total }}</h3>
+   </ul>
+  </ul>
+  
+  <h3><a href="{% url 'distances:new_exercise' %}">Lisää uusi a Harjoitus:</a></h3>
+  
+{% endblock content %}

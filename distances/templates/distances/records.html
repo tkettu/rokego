@@ -1,0 +1,85 @@
+{% extends "distances/base.html" %}
+{% load bootstrap3 %}
+{% load crispy_forms_tags %}
+
+{% block header %}
+  <h2>Ennätykset</h2>
+{% endblock header %}
+
+{% block content %}
+  
+<!--   <form action="{% url 'distances:records' %} "method='post' class='form'>
+      {% csrf_token %}
+	  {{ form.as_p }}
+	  
+	  {% buttons %}
+	   <button name="submit" class="btn btn-primary" value="filter">Valitse laji</button>
+	  {% endbuttons %}
+	
+  </form> -->
+  <div id="id_filter_set">
+    {% crispy filter.form filter.form.helper %}
+  </div>
+  <table style="width:100%">
+    <tr>
+	  <!--<th>Sport</th>-->
+	  <th>Days</th>
+	  <th>Distance</th>
+	  <th>Period</th>
+	</tr>
+	{% for r in recs %}
+	 <tr>
+         <!--<td>{{ r.sport }}</td>-->
+		 <td>{{ r.days }}</td>
+		 <td>{{ r.distance }}</td>
+		 <td>{{ r.startDate }} - {{ r.endDate }} </td>
+	  </tr>
+	 {% empty %}
+	   <tr>
+	     <td>No exercises recorded yet.</td>
+	  </tr>
+	 {% endfor %} 
+	    <tr>
+	  <!--<th>Sport</th>-->
+	  <th>Week</th>
+	  <th>Sum</th>
+	  <th>.</th>
+	  
+	</tr>
+	{% for k, v  in weeks.items %}
+	 <tr>
+        <!-- <td>{{ ename }}</td>-->
+		 <td>{{ k }}</td>
+		 <td>{{ v }}</td>
+		 <td>.</td> 
+	  </tr>
+	 {% empty %}
+	   <tr>
+	     <td>No exercises recorded yet.</td>
+	  </tr>
+	 {% endfor %} 
+	 
+	 <tr>
+	  <!--<th>Sport</th>-->
+	  <th>Month</th>
+	  <th>Sum</th>
+	  <th>.</th>
+	  
+	</tr>
+	{% for k, v  in months.items %}
+	 <tr>
+        <!-- <td>{{ ename }}</td>-->
+		 <td>{{ k }}</td>
+		 <td>{{ v }}</td>
+		 <td>.</td> 
+	  </tr>
+	 {% empty %}
+	   <tr>
+	     <td>No exercises recorded yet.</td>
+	  </tr>
+	 {% endfor %} 
+	 
+    </table>
+    
+  
+{% endblock content %}

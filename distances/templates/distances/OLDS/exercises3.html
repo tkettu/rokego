@@ -1,0 +1,83 @@
+{% extends "distances/base.html" %}
+{% load bootstrap3 %}
+{% load render_table from django_tables2 %}
+{% load static %}
+
+{% block header %}
+	<h1>Exercises</h1>
+{% endblock header %}
+
+{% block content %}
+   
+   <form  action="{% url 'distances:exercises'  %} "method='post'  class="form">
+   
+	   {% csrf_token %}
+	   {{ form.as_p }}
+	  
+	   
+	{% buttons %}
+	  <button name="submit" class="btn btn-primary" value="filter">Suodata</button>
+	 
+	   <a class="btn btn-large btn-info" href="{% url 'distances:new_exercise' %}">Lisää uusi</a>
+    
+	{% endbuttons %}
+	
+  </form>
+ 
+   {% render_table table %}
+   
+   <table class="sortable" style="width:100%"  >
+     <thead>
+     <tr>
+	    <th>Sport</th>
+		<th>Time</th>
+		<th>Distance</th>
+		<th>Date</th>
+		<th>Aver speed (min/km)</th>
+	 </tr>
+	 </thead>
+	 <!-- slice:"n" - -->
+	 <!-- TODO: Look single exercises, modify and delete them -->
+	 <tbody>
+     {% for exercise in exercises %}
+	 
+	   <tr>
+			<!--<td>{{ exercise.id }}</td>-->
+	       <td><a href="{% url 'distances:edit_exercise' exercise.id %}">{{ exercise.sport }}</a></td>
+		   <td>{{ exercise.hours }}:{{ exercise.minutes|stringformat:"02d" }}</td>
+		   <td>{{ exercise.distance }}</td>
+		   <td>{{ exercise.date }}</td>
+		   <td>{{ exercise.average_speed }}</td>
+	   </tr>
+	 {% empty %}
+	  <tr>
+	     <td>No exercises recorded yet.</td>
+	  </tr>
+	 {% endfor %} 
+	 </tbody>
+	 <tfoot>
+	 <tr>
+	  <h4>
+   	    <td>Total </td> 
+	    <td>{{ totaltime }}</td>
+	    <td>{{ total }}</td>
+	    <td>{{ count}} suoritusta</td>
+	  </h4>
+	 </tr>
+	 <tr>
+	  <h4>
+   	    <td>Averages </td> 
+	    <td>{{ averagetime }}</td>
+	    <td>{{ average }}</td>
+	    <td></td>
+	  </h4>
+	 </tr>
+	 </tfoot>
+  
+   </table>
+ 
+<!-- TODO: Add new exercise-->
+   <h3><a href="{% url 'distances:new_exercise' %}">Lisää uusi Harjoitus:</a></h3>
+   
+  
+{% endblock content %}

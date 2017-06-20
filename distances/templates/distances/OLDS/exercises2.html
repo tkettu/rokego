@@ -1,0 +1,50 @@
+{% extends "distances/base.html" %}
+{% load bootstrap3 %}
+
+{% block header %}
+	<h1>Exercises</h1>
+{% endblock header %}
+
+{% block content %}
+   
+   <form action="{% url 'distances:exercises'  %}" method='post'>
+    
+	{% csrf_token %}
+	{{ form.as_p }}
+	
+	<input type="submit" value="Submit" />
+  </form>
+  
+   <table style="width:100%">
+     <tr>
+	    <th>Sport</th>
+		<th>Time</th>
+		<th>Distance</th>
+		<th>Date</th>
+	 </tr>
+     {% for exercise in exercises %}
+	   <tr>
+	       <td>{{ exercise.sport }}</td>
+		   <td>{{ exercise.hours }}:{{ exercise.minutes }}</td>
+		   <td>{{ exercise.distance }}</td>
+		   <td>{{ exercise.date }}</td>
+	   </tr>
+	 {% empty %}
+	  <tr>
+	     <td>No exercises recorded yet.</td>
+	  </tr>
+	 {% endfor %} 
+	 <h4>
+   	   <td>Total </td> 
+	   <td>{{ totaltime }}</td>
+	   <td>{{ total }}</td>
+	   <td> </td>
+	 </h4>
+  
+   </table>
+	 
+<!-- TODO: Add new exercise-->
+   <h3><a href="{% url 'distances:new_exercise' %}">Lisää uusi Harjoitus:</a></h3>
+   
+  
+{% endblock content %}

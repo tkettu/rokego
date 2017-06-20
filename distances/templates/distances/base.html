@@ -1,0 +1,111 @@
+{% load bootstrap3 %}
+{% load render_table from django_tables2 %}
+{% load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device.width, initial-scale=1">
+	<link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'distances/style.css' %}" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<title>Distance tracker</title>
+	
+	{% bootstrap_css %}
+	{% bootstrap_javascript %}
+	<script src="{% static 'distances/sorttable.js' %}"></script>
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+    $(function() {
+      $( "#id_date" ).datepicker();
+    });
+    </script>
+	<style>
+	
+	  /* Remove the navbar's default margin-bottom and rounded borders */ 
+     .navbar {
+       margin-bottom: 0;
+       border-radius: 0;
+     }
+	 
+	 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+	   /* Set black background color, white text and some padding */
+	  footer {
+        background-color: #555;
+        color: white;
+        padding: 15px;
+
+      }
+	</style>
+  </head>
+  
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+	  <div class="container">
+	  
+	    <div class="navbar-header">
+		  <button type="button" class="navbar-toggle collapsed"
+		    data-toggle="collapse" data-target="#navbar"
+			aria-expanded="false" aria-controls="navbar">
+		  </button>
+		  <a class="navbar-brand" href="{% url 'distances:index' %}">
+				Distance tracker</a>
+		</div>
+		
+		<div id="navbar" class="navbar-collapse collapse">
+		  <ul class="nav navbar-nav">
+		    <li><a href="{% url 'distances:exercises' %}">Exercises</a></li>
+		  </ul>
+		  <ul class="nav navbar-nav">
+		    <li><a href="{% url 'distances:records' %}">Records</a></li>
+		  </ul>
+		  <ul class="nav navbar-nav">
+		    <li><a href="{% url 'distances:graphs' %}">Graphs</a></li>
+		  </ul>
+		  
+		  <ul class="nav navbar-nav navbar-right">
+		    {% if user.is_authenticated %}
+			  <li><a>Hello, {{ user.username }}.</a></li>
+			  <li><a href="{% url 'users:logout' %}">log out</a></li>
+			{% else %}
+			  <li><a href="{% url 'users:register' %}">register</a></li>
+			  <li><a href="{% url 'users:login' %}">login</a></li>
+			{% endif %}
+		  </ul>
+		</div><!--/.nav-collapse -->
+	
+	  </div> 
+	</nav>
+	
+	<div class="container">
+	 
+	  <div class="page-header">
+	    {% block header %}{% endblock header %}
+	  </div>
+	  <div >
+	    {% block content %}{% endblock content %}
+	  </div>
+	 
+	</div> <!-- /container  -->
+  <footer class="container-fluid text-center">
+	<p>&copy; All rights Roki </p>
+   </footer>
+  </body>
+</html>

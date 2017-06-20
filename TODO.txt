@@ -1,0 +1,28 @@
+- Lis‰‰ record sivulle formi (monen p‰iv‰n jakso, mik‰ laji)
+- Lis‰‰ record sivulle viikon kuukauden vuoden tulokset
+		-TEST week_results()
+- Muotoilu (lista, django_tables2, ???)
+
+- Add new exercise (crispy-forms?) DONE
+- Edit exercise (crispy-forms?) 
+- Mahdollisuus lis‰t‰t oma laji (ali-lajeja, (Running: TrailRunning,...)) (Tageina???)
+
+- Muita "enn‰tyksi‰"
+- Records how many days 
+
+-Graafit (matka-aika, boxplot matka ja aika useampi laji ..., kumulatiivine matka ja keskiarvon kehitys ajanjaksona)
+
+-Sortable table DONE, django-tables2? Data django-tables2:hin ja renderˆid‰‰n sielt‰ templateen
+	- Time-column sort DONE
+	- Totals, averages etc. (aggregate..) (django tables pinned rows) (DONE??)
+ 	
+
+-Filters (DONE for execises), records filters
+	- DatePicker muille selaimille (Firefox, IE) DONE
+
+-Average speed (min.[min] or min.sec) DONE
+
+- Date format
+
+-Registration with email https://medium.com/@frfahim/django-registration-with-confirmation-email-bb5da011e4ef
+-Forgot password https://simpleisbetterthancomplex.com/tutorial/2016/09/19/how-to-create-password-reset-view.html (DONE development, NOT production), UI???
