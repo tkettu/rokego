@@ -159,7 +159,9 @@ if os.getcwd() == '/app':
 	SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 	
 	# Allow all host headers.
-	ALLOWED_HOSTS = ['*']
+	ALLOWED_HOSTS = ['rokego.herokuapp.com']
+	
+	DEBUG = False
 	
 	# Static asset configuration
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
