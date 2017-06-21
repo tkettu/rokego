@@ -1,0 +1,51 @@
+#id_filter_set {
+    background-color: lightblue;
+	/*width: 50%;*/
+	}
+
+body {
+	/*background: white url("images/testi_kuva2.gif") no-repeat right bottom;*/
+	background-color: white;
+	}
+
+#id_centered_text {
+   text-align: center;
+   }
+	
+	
+#id_sport {
+   width: 100px;
+   }
+ 
+ 
+#id_hours {
+   width: 100px;
+   }
+    
+#id_minutes {
+   width: 100px;
+   }
+  
+ #id_distance {
+   width: 100px;
+   }
+  
+ #id_date {
+   width: 150px;
+   }
+   
+ #id_startDate {
+   width: 150px;
+   }
+ 
+#id_endDate {
+   width: 150px;
+   }
+  
+ /* Sortable tables */
+table.sortable thead {
+    background-color:#eee;
+    color:#666666;
+    font-weight: bold;
+    cursor: default;
+}
