@@ -1,4 +1,4 @@
-{% extends "distances/base.html" %}
+ {% extends "distances/base.html" %}
 {% load bootstrap3 %}
 {% load static %}
 
@@ -6,21 +6,20 @@
 
 {% block header %}
   <h2>Add new exercise</h2>
-{% endblock header %}
+{% endblock header %} 
 
-{% block content %}
-
- {% if messages %}
- <ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
- </ul>
- {% endif %}  
-
-  {% load crispy_forms_tags %}
-  {% crispy form %}
-  
+ {% block content %}
+ 
+			 {% if messages %}
+		 <ul class="messages">
+			{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		 </ul>
+		 {% endif %}  
+			  {% load crispy_forms_tags %}
+			  {% crispy form %}
+	
   <!-- <form action="{% url 'distances:new_exercise' %}" method='post' class="form">
     
 	{% csrf_token %}
@@ -34,4 +33,4 @@
   
  
   
-{% endblock content %}
+ {% endblock content %}

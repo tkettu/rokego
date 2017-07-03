@@ -1,10 +1,13 @@
 {% extends "distances/base.html" %}
 {% load render_table from django_tables2 %}
+
+
 {% block header %}
   <div class='jumbotron'>
     <h1 id ='id_centered_text'>Track your distance.</h1>
   </div>
 {% endblock header %}
+
 
 
 {% block content %}
@@ -13,11 +16,16 @@
     Mark your kilometers run, skied, cycled.
   </h2>
      <!-- TODO: Front page, add exercise, last week summary ... -->
-    <div id='id_centered_text'>
+	
+	    
+   
 	  {% if user.is_authenticated %}
+		 {% include "distances/new_exersise2.html" %}
+		<div id='id_centered_text'>
 		  <ul style="list-style-type:none">
-		     <li> <p>  <a class="btn btn-large btn-info" href="{% url 'distances:new_exercise' %}" target="_blank">
-										Add new exercise</a></p> </li>
+		      <li> <p>  <a class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal" >
+										Add new exercise</a></p> </li> 
+		
 			 <li> <p>Kilometers this week: {{  dist }}; month {{ distm }} </p> </li>
 			 <li> <p>Time this week: {{ time }}; month {{ timem }}</p></li>
 			 <li></li>
@@ -29,16 +37,22 @@
 			{% endfor %}
 				
 		  </ul>
+		</div>
 		  <!--<iframe src="{% url 'distances:new_exercise' %}">
 				<a class="btn btn-large btn-info" href="{% url 'distances:new_exercise' %}">Add new exercise</a></p>
 			</iframe>-->
 	  {% else %}
+	   <div id='id_centered_text'>
 	    <ul>
 		 <li> <a href="{% url 'users:login' %}">login</a> or <a href="{% url 'users:register' %}">register</a></li>
 		 <li><a href='{{ link }}' target="_blank">Todays link</a></li>
-	     
+		</div>
 		 
 	   {% endif %}
-	</div>
-  
+	
+
+ 
+ 
+ 
+ 
 {% endblock content %}

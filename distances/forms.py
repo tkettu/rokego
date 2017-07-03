@@ -41,7 +41,9 @@ class ExerciseForm(forms.ModelForm):
 			ButtonHolder(
 				Submit('submit','Submit'),
 				Submit('submitother', 'Save and add other')
-				)
+				),
+				#css_class='row'
+				#), #/Div
 			)
 			
 		
@@ -54,7 +56,8 @@ class ExerciseForm(forms.ModelForm):
 		
 		widgets = {
 		    #'date': DateInput(),
-		    'date': forms.DateInput(format=('%d-%m-%Y'),attrs={'class': 'datepicker'}),
+		    #'date': forms.DateInput(format=('%d-%m-%Y'),attrs={'class': 'datepicker'}),
+		    'date': forms.DateInput(attrs={'class': 'datepicker'}),
 		    'text': forms.Textarea(attrs={'cols': 80}),
 		}
 		#widgets = {
@@ -102,19 +105,28 @@ class ExerciseFilterFormHelper(FormHelper):
 		
 		ButtonHolder(
 			Submit('submit', 'Apply'),
-			HTML('<a  class="btn btn-large btn-info" href="{% url \'distances:new_exercise\' %}"> Add New </a>')
+			#HTML('<a  class="btn btn-large btn-info" href="{% url \'distances:new_exercise\' %}"> Add New </a>')
+			HTML('<a  class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal" > Add New </a>')
 			)
 		)
+	# Todo, not working??
+	class Meta:
+		widgets = {
+			'startDate': forms.DateInput(attrs={'class': 'datepicker'}),
+			'endDate': forms.DateInput(attrs={'class': 'datepicker'}),
+		}
 
 class RecordFilterFormHelper(FormHelper):
 	form_method = 'GET'
 	layout = Layout(
 		Fieldset(
-			'',
-			Div('sport', css_class='col-md-2',),
-			Div('sub_sport', css_class='col-md-2',),
-			#Div('days', css_class='col-md-2',),
-			css_class='row'
+			'Filters',
+			Div(
+				Div('sport', css_class='col-md-2',),
+				Div('sub_sport', css_class='col-md-2',),
+				#Div('days', css_class='col-md-2',),
+				css_class='row'
+			),
 		),
 		
 		ButtonHolder(

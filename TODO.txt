@@ -3,8 +3,8 @@
 		-TEST week_results()
 - Muotoilu (lista, django_tables2, ???)
 
-- Add new exercise (crispy-forms?) DONE
-- Edit exercise (crispy-forms?) 
+- Add new exercise (crispy-forms?) DONE (modal)
+- Edit exercise (crispy-forms?) (modal)
 - Mahdollisuus lisätät oma laji (ali-lajeja, (Running: TrailRunning,...)) (Tageina???)
 
 - Muita "ennätyksiä"
@@ -23,6 +23,9 @@
 -Average speed (min.[min] or min.sec) DONE
 
 - Date format
+- Date ei toimi (add new, today???)
 
 -Registration with email https://medium.com/@frfahim/django-registration-with-confirmation-email-bb5da011e4ef
--Forgot password https://simpleisbetterthancomplex.com/tutorial/2016/09/19/how-to-create-password-reset-view.html (DONE development, NOT production), UI???
+-Forgot password https://simpleisbetterthancomplex.com/tutorial/2016/09/19/how-to-create-password-reset-view.html (DONE development, DONE production), UI???
+
+Optimize records (kadane's algorithm)

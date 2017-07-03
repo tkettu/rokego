@@ -1,12 +1,13 @@
 #id_filter_set {
-    background-color: lightblue;
+    background-color: #040672;
+	border-radius: 15px;
 	/*width: 50%;*/
 	}
 
-body {
-	/*background: white url("images/testi_kuva2.gif") no-repeat right bottom;*/
+/* body {
+	background: white url("images/testi_kuva2.gif") no-repeat right bottom;
 	background-color: white;
-	}
+	} */
 
 #id_centered_text {
    text-align: center;
@@ -41,11 +42,22 @@ body {
 #id_endDate {
    width: 150px;
    }
-  
+ 
+ div[id=exerciseModal]{
+	border-radius: 20px;
+ }
+ table.paleblue {
+	color: black;
+ }
  /* Sortable tables */
 table.sortable thead {
     background-color:#eee;
     color:#666666;
     font-weight: bold;
     cursor: default;
+}
+
+.blank_row {
+	height: 10px;
+	/* background-color: #FFFFFF;*/
 }

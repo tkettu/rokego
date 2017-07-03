@@ -3,7 +3,6 @@
 {% load crispy_forms_tags %}
 
 {% block header %}
-  <h2>Ennätykset</h2>
 {% endblock header %}
 
 {% block content %}
@@ -36,9 +35,12 @@
 	  </tr>
 	 {% empty %}
 	   <tr>
-	     <td>No exercises recorded yet.</td>
+	     <td>No exercises recorded yet. Or in development</td>
 	  </tr>
 	 {% endfor %} 
+	<tr class="blank_row">
+      <td colspan="3"></td>
+	</tr>
 	    <tr>
 	  <!--<th>Sport</th>-->
 	  <th>Week</th>
@@ -58,7 +60,9 @@
 	     <td>No exercises recorded yet.</td>
 	  </tr>
 	 {% endfor %} 
-	 
+	 <tr class="blank_row">
+       <td colspan="3"></td>
+	 </tr>
 	 <tr>
 	  <!--<th>Sport</th>-->
 	  <th>Month</th>

@@ -77,7 +77,10 @@ class Exercise(models.Model):
 			mins2 = self.hours*60 + self.minutes
 			speed = mins2/dis
 			mins = int(speed)
-			secs = int((speed - mins)*60)
+			secs = str(int((speed - mins)*60))
+			if len(secs) < 2:
+				secs = '0' + secs
+			
 			return '{0}{1}'.format(mins,','+str(secs))
 			#minuts = int(self.hours)*60 + int(self.minutes)
 			#return round(minuts/dis, 2)

@@ -49,11 +49,12 @@ def index(request):
 		today = date.today()
 		cur_week = today.isocalendar()[1]
 		cur_month = today.month
+		cur_year = today.year
 		exercises = Exercise.objects.filter(owner=request.user, 
-							date__week=cur_week).all().order_by('-date')
+							date__week=cur_week, date__year=cur_year).all().order_by('-date')
 		
 		exercises_m = Exercise.objects.filter(owner=request.user, 
-							date__month=cur_month).all().order_by('-date')
+							date__month=cur_month, date__year=cur_year).all().order_by('-date')
 		
 		exes10 = Exercise.objects.filter(owner=request.user).all().order_by('-date')[:10]
 		tot = Stats.totals(exercises)
@@ -62,8 +63,34 @@ def index(request):
 		tot_m =  Stats.totals(exercises_m)
 		tottime_m = Stats.totaltime(exercises_m)
 		
+		#form = new_exercise_modal(request, 'distances:index')
+		if request.method != 'POST':
+			form = ExerciseForm()
 		
-		context = {'dist': tot, 'time' : tottime, 'distm': tot_m, 'timem': tottime_m, 'exercises': exes10}
+		else:
+			form = ExerciseForm(data=request.POST)
+			
+			if form.is_valid():
+				new_exercise = form.save(commit=False)
+				new_exercise.owner = request.user
+				new_exercise.save()
+				
+				logger.warning(request.POST)
+				#if request.POST.get("addone", "submit"):
+				if request.POST.get("submit"):
+					logger.warning('Going back to exercises?')
+					ret_url = 'distances:index'
+					return HttpResponseRedirect(reverse(ret_url))
+				elif request.POST.get("submitother"):
+					# Inform somehow that new was added
+					logger.warning('Going to new_exercises?')
+					msg = 'Added ' + str(new_exercise.sport) +  ' ' + str(new_exercise.distance) + ' km.'
+					messages.info(request, msg)
+					return HttpResponseRedirect(reverse('distances:new_exercise'))
+		
+		
+		context = {'dist': tot, 'time' : tottime, 'distm': tot_m, 
+			'timem': tottime_m, 'exercises': exes10, 'form': form}
 		
 	else:
 		context = {'link':'https://www.youtube.com/watch?v=tENiCpaIk9A'}
@@ -79,14 +106,66 @@ def exercises(request):
 	filter.form.helper = ExerciseFilterFormHelper()
 	filteredExercises = filter.qs
 	
+	#modalForm = new_exercise_modal(request, 'distances:exercises')
+	ret_url = 'distances:exercises'
+	if request.method != 'POST':
+			form = ExerciseForm()
+		
+	else:
+		form = ExerciseForm(data=request.POST)
+		
+		if form.is_valid():
+			new_exercise = form.save(commit=False)
+			new_exercise.owner = request.user
+			new_exercise.save()
+			
+			logger.warning(request.POST)
+			#if request.POST.get("addone", "submit"):
+			if request.POST.get("submit"):
+				logger.warning('Going back to exercises?')
+				return HttpResponseRedirect(reverse(ret_url))
+			elif request.POST.get("submitother"):
+				# Inform somehow that new was added
+				logger.warning('Going to new_exercises?')
+				msg = 'Added ' + str(new_exercise.sport) +  ' ' + str(new_exercise.distance) + ' km.'
+				messages.info(request, msg)
+				return HttpResponseRedirect(reverse('distances:new_exercise'))
 	table = ExerciseTable(filteredExercises)
 	
 	# set totals, averages etc. table.set...(Stats.get...)
 	RequestConfig(request).configure(table)
 	context['filter'] = filter
 	context['table'] = table
+	#context['form'] = modalForm
+	context['form'] = form
 	response = render(request, 'distances/exercises.html', context)
 	return response
+
+def new_exercise_modal(request, ret_url):
+	if request.method != 'POST':
+			form = ExerciseForm()
+		
+	else:
+		form = ExerciseForm(data=request.POST)
+		
+		if form.is_valid():
+			new_exercise = form.save(commit=False)
+			new_exercise.owner = request.user
+			new_exercise.save()
+			
+			logger.warning(request.POST)
+			#if request.POST.get("addone", "submit"):
+			if request.POST.get("submit"):
+				logger.warning('Going back to exercises?')
+				return HttpResponseRedirect(reverse(ret_url))
+			elif request.POST.get("submitother"):
+				# Inform somehow that new was added
+				logger.warning('Going to new_exercises?')
+				msg = 'Added ' + str(new_exercise.sport) +  ' ' + str(new_exercise.distance) + ' km.'
+				messages.info(request, msg)
+				return HttpResponseRedirect(reverse('distances:new_exercise'))
+				
+	#return form
 
 def example_form(request):
 	""" """
@@ -136,14 +215,15 @@ def records(request):
 	
 	recs = []
 	
-	for d in ddays:
-		re0 = rec.longest_period(filter.qs, days=d)
-		recs.append(re0)
+	# Todo optimize longest period
+	#for d in ddays:
+	#	re0 = rec.longest_period(filter.qs, days=d)
+	#	recs.append(re0)
 	
 	weeks = rec.week_results(filter.qs)
 	#recs = rec.longest_period(request.user, days=7, sport='Running')
 	context['filter'] = filter
-	context['recs'] = recs
+	#context['recs'] = recs
 	context['weeks'] = weeks
 	context['months'] = rec.month_results(filter.qs)
 	#context['month'] = months
@@ -350,19 +430,19 @@ def exercise(request, exercisename):
 
 
 
-def get_sport_form(request):
-	"""gets sport from sport form"""
-	if request.method != 'POST':
-		form = SportForm()
-	else:
-		form = SportForm(data=request.POST)
-		if form.is_valid():
-			exercise_name = form.cleaned_data['field']
+#def get_sport_form(request):
+	#"""gets sport from sport form"""
+	#if request.method != 'POST':
+		#form = SportForm()
+	#else:
+		#form = SportForm(data=request.POST)
+		#if form.is_valid():
+			#exercise_name = form.cleaned_data['field']
 	
-	if 'exercise_name' in locals():
-		return {'form': form, 'exercise_name': exercise_name}
-	else:
-		return {'form': form}
+	#if 'exercise_name' in locals():
+		#return {'form': form, 'exercise_name': exercise_name}
+	#else:
+		#return {'form': form}
 		
 @login_required
 def graphs(request):
