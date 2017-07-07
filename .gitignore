@@ -3,7 +3,4 @@ __pycache__/
 *.sqlite3
 
 #local txt files
-TODO.txt
-spec.txt
-Tests.txt
-Virheita.txt
+extra_txtfiles/
