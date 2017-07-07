@@ -5,13 +5,13 @@
 {% load static %}
 
 {% block header %}
-<!--	<h1>Exercises</h1>-->
+<!--	<h1>Exercises</h1>--><button class="btn btn-info" onclick="showElement('id_filter_set')">Filters</button>
 {% endblock header %}
 
 {% block content %}
-   
+ 
  <!--   <form  action="{% url 'distances:exercises'  %} "method='post'  class="form">
-   
+
 	   {% csrf_token %}
 	   {{ form.as_p }}
 	  
@@ -24,10 +24,12 @@
 	{% endbuttons %}
 	
   </form> -->
-  <div id="id_filter_set">
+  <div id="id_filter_set" style="display: none" >
     {% crispy filter.form filter.form.helper %}
    </div>	
     {% render_table table %}
- 
+
+
+
 {% include "distances/new_exersise2.html" %}
-{% endblock content %}
+   {% endblock content %}

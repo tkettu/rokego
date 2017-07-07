@@ -91,15 +91,19 @@ class DateForm(forms.ModelForm):
 class ExerciseFilterFormHelper(FormHelper):
 	form_method = 'GET'
 	layout = Layout(
+		
 		Fieldset(
-   		    'Filters',
+			'',
+   		    #'Filters',
 		    #'sport',
 			Div(
+				
 				Div('sport', css_class='col-md-2',),
 				Div('sub_sport', css_class='col-md-2',),
 				Div('startDate', 'endDate', css_class='col-md-2', ),
 				#Div('endDate', css_class='col-md-2',),
 				css_class='row'
+				#css_class='form-group'
 			),
 		),
 		
@@ -107,8 +111,10 @@ class ExerciseFilterFormHelper(FormHelper):
 			Submit('submit', 'Apply'),
 			#HTML('<a  class="btn btn-large btn-info" href="{% url \'distances:new_exercise\' %}"> Add New </a>')
 			HTML('<a  class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal" > Add New </a>')
-			)
+			),
+			
 		)
+		
 	# Todo, not working??
 	class Meta:
 		widgets = {

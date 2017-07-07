@@ -1,5 +1,5 @@
 #id_filter_set {
-    background-color: #040672;
+   /* background-color: #040672;*/
 	border-radius: 15px;
 	/*width: 50%;*/
 	}
@@ -46,9 +46,17 @@
  div[id=exerciseModal]{
 	border-radius: 20px;
  }
+ 
+ div[id=div_id_sport]{
+	color: black;
+}
+
  table.paleblue {
 	color: black;
  }
+ 
+ 
+ 
  /* Sortable tables */
 table.sortable thead {
     background-color:#eee;

@@ -22,30 +22,30 @@
 	  {% if user.is_authenticated %}
 		 {% include "distances/new_exersise2.html" %}
 		<div id='id_centered_text'>
-		  <ul style="list-style-type:none">
-		      <li> <p>  <a class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal" >
-										Add new exercise</a></p> </li> 
 		
-			 <li> <p>Kilometers this week: {{  dist }}; month {{ distm }} </p> </li>
-			 <li> <p>Time this week: {{ time }}; month {{ timem }}</p></li>
-			 <li></li>
-			 <li>Latest exercises</li>
+		    <p>  <a class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal" >
+										Add new exercise</a></p> 
+		
+			 <p>Kilometers this week: {{  dist }}; month {{ distm }} </p> 
+			  <p>Time this week: {{ time }}; month {{ timem }}</p>
+			 
+			 <p>Latest exercises</p>
 			 {% for e in exercises %}
-			    <li>{{ e }}</li>
+			    <p>{{ e }}</p>
 			{% empty %}
-				<li>No exercises this week yet.</li>
+				<p>No exercises this week yet.</p>
 			{% endfor %}
 				
-		  </ul>
+		  
 		</div>
 		  <!--<iframe src="{% url 'distances:new_exercise' %}">
 				<a class="btn btn-large btn-info" href="{% url 'distances:new_exercise' %}">Add new exercise</a></p>
 			</iframe>-->
 	  {% else %}
 	   <div id='id_centered_text'>
-	    <ul>
-		 <li> <a href="{% url 'users:login' %}">login</a> or <a href="{% url 'users:register' %}">register</a></li>
-		 <li><a href='{{ link }}' target="_blank">Todays link</a></li>
+	    
+		 <a href="{% url 'users:login' %}">login</a> or <a href="{% url 'users:register' %}">register</a>
+		 
 		</div>
 		 
 	   {% endif %}

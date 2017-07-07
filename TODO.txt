@@ -28,4 +28,4 @@
 -Registration with email https://medium.com/@frfahim/django-registration-with-confirmation-email-bb5da011e4ef
 -Forgot password https://simpleisbetterthancomplex.com/tutorial/2016/09/19/how-to-create-password-reset-view.html (DONE development, DONE production), UI???
 
-Optimize records (kadane's algorithm)
+Optimize records (kadane's algorithm, ei toiminen tässä)

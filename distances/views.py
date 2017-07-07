@@ -42,6 +42,8 @@ exername = 'all'
 enddate = ''
 startdate = ''
 
+
+
 def index(request):
 	"""The home page for Distance Tracker."""
 	
@@ -63,7 +65,8 @@ def index(request):
 		tot_m =  Stats.totals(exercises_m)
 		tottime_m = Stats.totaltime(exercises_m)
 		
-		#form = new_exercise_modal(request, 'distances:index')
+		#modalForm = ''
+		#new_exercise_modal(request, 'distances:index')
 		if request.method != 'POST':
 			form = ExerciseForm()
 		
@@ -107,6 +110,9 @@ def exercises(request):
 	filteredExercises = filter.qs
 	
 	#modalForm = new_exercise_modal(request, 'distances:exercises')
+	#modalForm = ''
+	#new_exercise_modal(request, 'distances:exercises')
+	#print("TASSAASSAA!!!!" + str(modalForm))
 	ret_url = 'distances:exercises'
 	if request.method != 'POST':
 			form = ExerciseForm()
@@ -143,13 +149,15 @@ def exercises(request):
 
 def new_exercise_modal(request, ret_url):
 	if request.method != 'POST':
-			form = ExerciseForm()
-		
+		#form = ExerciseForm()
+		modalForm = ExerciseForm()
+		#return form
 	else:
-		form = ExerciseForm(data=request.POST)
+		modalForm = ExerciseForm(data=request.POST)
 		
-		if form.is_valid():
-			new_exercise = form.save(commit=False)
+		if modalForm.is_valid():
+			#new_exercise = form.save(commit=False)
+			new_exercise = modalForm.save(commit=False)
 			new_exercise.owner = request.user
 			new_exercise.save()
 			
@@ -164,8 +172,8 @@ def new_exercise_modal(request, ret_url):
 				msg = 'Added ' + str(new_exercise.sport) +  ' ' + str(new_exercise.distance) + ' km.'
 				messages.info(request, msg)
 				return HttpResponseRedirect(reverse('distances:new_exercise'))
-				
-	#return form
+	
+	
 
 def example_form(request):
 	""" """
