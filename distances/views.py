@@ -16,8 +16,7 @@ from django_filters.views import FilterView
 from .models import Exercise, Person
 from .forms import (
 					ExerciseForm, SportForm, DateForm, 
-					ExerciseFilterFormHelper, RecordFilterFormHelper, 
-					ExampleForm
+					ExerciseFilterFormHelper, RecordFilterFormHelper
 					)
 from .tables import PersonTable, ExerciseTable
 from distances.filters import ExerciseFilter, RecordFilter

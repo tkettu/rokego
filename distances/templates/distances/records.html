@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block header %}
+<button class="btn btn-info" onclick="showElement('id_filter_set')">Filters</button>
 {% endblock header %}
 
 {% block content %}
@@ -16,7 +17,7 @@
 	  {% endbuttons %}
 	
   </form> -->
-  <div id="id_filter_set">
+  <div id="id_filter_set" style="display: none">
     {% crispy filter.form filter.form.helper %}
   </div>
   <table style="width:100%">
