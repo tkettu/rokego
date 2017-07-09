@@ -14,6 +14,8 @@ from django.core.mail import EmailMessage
 
 from .forms import RegisterForm
 
+site_name = 'Rokego'
+
 def logout_view(request):
 	"""Log the user out."""
 	logout(request)
@@ -33,7 +35,7 @@ def register(request):
 			user.is_active = False
 			user.save()
 			current_site = get_current_site(request)
-			subject = 'Activate your blog account.'
+			subject = 'Activate your {0} account.'.format(site_name)
 			message = render_to_string('acc_active_email.html', {
                 'user':user, 'domain':current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
