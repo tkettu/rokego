@@ -16,7 +16,8 @@ from django_filters.views import FilterView
 from .models import Exercise, Person
 from .forms import (
 					ExerciseForm, SportForm, DateForm, 
-					ExerciseFilterFormHelper, RecordFilterFormHelper
+					ExerciseFilterFormHelper, RecordFilterFormHelper,
+					EditExerciseForm
 					)
 from .tables import PersonTable, ExerciseTable
 from distances.filters import ExerciseFilter, RecordFilter
@@ -64,33 +65,16 @@ def index(request):
 		tot_m =  Stats.totals(exercises_m)
 		tottime_m = Stats.totaltime(exercises_m)
 		
-		#modalForm = ''
-		#new_exercise_modal(request, 'distances:index')
+		ret_url = 'distances:index'
 		if request.method != 'POST':
 			form = ExerciseForm()
 		
 		else:
-			form = ExerciseForm(data=request.POST)
+			modaln = new_exercise_modal(request, ret_url)
+			if modaln[1]:
+				return HttpResponseRedirect(reverse(modaln[2]))
+			form = modaln[0]
 			
-			if form.is_valid():
-				new_exercise = form.save(commit=False)
-				new_exercise.owner = request.user
-				new_exercise.save()
-				
-				logger.warning(request.POST)
-				#if request.POST.get("addone", "submit"):
-				if request.POST.get("submit"):
-					logger.warning('Going back to exercises?')
-					ret_url = 'distances:index'
-					return HttpResponseRedirect(reverse(ret_url))
-				elif request.POST.get("submitother"):
-					# Inform somehow that new was added
-					logger.warning('Going to new_exercises?')
-					msg = 'Added ' + str(new_exercise.sport) +  ' ' + str(new_exercise.distance) + ' km.'
-					messages.info(request, msg)
-					return HttpResponseRedirect(reverse('distances:new_exercise'))
-		
-		
 		context = {'dist': tot, 'time' : tottime, 'distm': tot_m, 
 			'timem': tottime_m, 'exercises': exes10, 'form': form}
 		
@@ -108,33 +92,24 @@ def exercises(request):
 	filter.form.helper = ExerciseFilterFormHelper()
 	filteredExercises = filter.qs
 	
-	#modalForm = new_exercise_modal(request, 'distances:exercises')
-	#modalForm = ''
-	#new_exercise_modal(request, 'distances:exercises')
-	#print("TASSAASSAA!!!!" + str(modalForm))
+	# Add new exercise with modal
 	ret_url = 'distances:exercises'
 	if request.method != 'POST':
-			form = ExerciseForm()
+		if request.GET.get('delete'):
+			# TODO, implement working multi deleta
+			items = request.GET.getlist('checks')
+			print(items)
+		form = ExerciseForm()
 		
 	else:
-		form = ExerciseForm(data=request.POST)
+	
+		modaln = new_exercise_modal(request, ret_url)
+		if modaln[1]:
+			return HttpResponseRedirect(reverse(modaln[2]))
+		form = modaln[0]
+	
+	
 		
-		if form.is_valid():
-			new_exercise = form.save(commit=False)
-			new_exercise.owner = request.user
-			new_exercise.save()
-			
-			logger.warning(request.POST)
-			#if request.POST.get("addone", "submit"):
-			if request.POST.get("submit"):
-				logger.warning('Going back to exercises?')
-				return HttpResponseRedirect(reverse(ret_url))
-			elif request.POST.get("submitother"):
-				# Inform somehow that new was added
-				logger.warning('Going to new_exercises?')
-				msg = 'Added ' + str(new_exercise.sport) +  ' ' + str(new_exercise.distance) + ' km.'
-				messages.info(request, msg)
-				return HttpResponseRedirect(reverse('distances:new_exercise'))
 	table = ExerciseTable(filteredExercises)
 	
 	# set totals, averages etc. table.set...(Stats.get...)
@@ -146,36 +121,26 @@ def exercises(request):
 	response = render(request, 'distances/exercises.html', context)
 	return response
 
-def new_exercise_modal(request, ret_url):
-	if request.method != 'POST':
-		#form = ExerciseForm()
-		modalForm = ExerciseForm()
-		#return form
-	else:
-		modalForm = ExerciseForm(data=request.POST)
-		
-		if modalForm.is_valid():
-			#new_exercise = form.save(commit=False)
-			new_exercise = modalForm.save(commit=False)
-			new_exercise.owner = request.user
-			new_exercise.save()
-			
-			logger.warning(request.POST)
-			#if request.POST.get("addone", "submit"):
-			if request.POST.get("submit"):
-				logger.warning('Going back to exercises?')
-				return HttpResponseRedirect(reverse(ret_url))
-			elif request.POST.get("submitother"):
-				# Inform somehow that new was added
-				logger.warning('Going to new_exercises?')
-				msg = 'Added ' + str(new_exercise.sport) +  ' ' + str(new_exercise.distance) + ' km.'
-				messages.info(request, msg)
-				return HttpResponseRedirect(reverse('distances:new_exercise'))
-	
-	
 
-def example_form(request):
-	""" """
+def new_exercise_modal(request, ret_url):
+	form = ExerciseForm(data=request.POST)
+	
+	isForm = False
+	if form.is_valid():
+		new_exercise = form.save(commit=False)
+		new_exercise.owner = request.user
+		new_exercise.save()
+		
+		
+		if request.POST.get("submit"):
+			isForm = True
+			#return HttpResponseRedirect(reverse(ret_url))
+		elif request.POST.get("submitother"):
+			msg = 'Added ' + str(new_exercise.sport) +  ' ' + str(new_exercise.distance) + ' km.'
+			ret_url = 'distances:new_exercise'
+			isForm = True
+			#return HttpResponseRedirect(reverse('distances:new_exercise'))
+	return [form, isForm, ret_url]
 	
 @login_required	
 def new_exercise(request):
@@ -238,148 +203,6 @@ def records(request):
 	#context = {'form': form, 'recs': recs, 'weeks': weeks, 'ename': sport}
 	return render(request, 'distances/records.html', context)
 	
-#class ExerciseTableView(TemplateView):
-	
-	#template_name = 'distances/exercises.html'
-	##@login_required
-	#def __init__(self, request):
-		#self.request = request
-	
-	##@login_required
-	#def get_queryset(self, **kwargs):
-		##return Exercise.objects.filter(owner=self.request.user).all()
-		#return Exercise.objects.all()
-	##@login_required
-	
-	#def get_context_data(self, **kwargs):
-		##context = super(ExerciseTableView, self).get_context_data(**kwargs)
-		##context = ExerciseTableView.get_context_data(**kwargs)
-		#context = {}
-		#exercises = self.get_queryset(**kwargs)
-		##check_exercise_owner(exercises, self.request.user)
-		#filter = ExerciseFilter(self.request.GET, queryset=exercises)
-		#filter.form.helper = ExerciseFilterFormHelper()
-		#table = ExerciseTable(filter.qs)
-		#RequestConfig(self.request).configure(table)
-		#context['filter'] = filter
-		#context['table'] = table
-		#response = render(self.request, 'distances/exercises.html', context)
-		##response.set_cookie(key='id',value=1)
-		#return response
-	
-	#def check_exercise_owner(self, exercise, user):
-	#	if exercise.owner != user:
-	#		raise Http404
-	#	return True	
-
-
-#@login_required
-#def exercises(request):
-	#"""Shows user exrcises."""
-	##choosen_exercise = 'all'
-	##TODO set filter for what before?
-	#if request.method != 'POST':
-		#form = SportForm()
-		##form_date = DateForm()
-		#exercise_name = request.GET.get('sport','')
-	#else:
-		#form = SportForm(data=request.POST)
-		##form_date = DateForm(data=request.POST)
-		#if form.is_valid():
-			#exercise_name = form.cleaned_data['field']
-			#filters.sport = exercise_name
-		##if form_date.is_valid():
-		##	startDate = form_date.cleaned_data['startDate']
-		##	endDate = form_date.cleaned_data['endDate']
-		##	logger.warning('sdate ' + str(startDate))
-		##	filters.startdate = startDate
-		##	filters.enddate = endDate
-			
-		##return HttpResponseRedirect(reverse('distances:exercises/?' + 'sport=' + exercise_name))
-		##return HttpResponseRedirect(reverse('distances:exercises2', kwargs={'sport': exercise_name}))
-		##return render_to_response('distances:exercises', {'sport': exercise_name})
-		##return HttpResponseRedirect(reverse('distances:exercises'))
-			##set_exercise_name(exercise_name)
-			##exername = exercise_name
-			##return HttpResponseRedirect(reverse('distances:exercise/' + exercise_name))
-			##Todo tänne palautus all, running, skiing jne.
-			##if exercise_name == 'all':
-			##	return HttpResponseRedirect(reverse('distances:exercises'))
-			##else:
-			##	return exercise(request, exercise_name)
-			##return HttpResponseRedirect(reverse('distances:exercise/' + exercise_name + '/'))
-	
-	##setfilter
-	##checkFilters(exercisename)
-	
-	#if 'exercise_name' in locals():
-		#exername = exercise_name
-	##	logger.warning('Exername ' + exername)
-	#else:
-		##exername = filters.sport
-		#exername = 'all'
-	
-	##Check if page already loaded and enddate (startdate) filters submitted
-	##if 'endDate' in locals(): 
-	##	enddate = endDate
-	##	startdate = startDate 
-	##else:
-		##enddate = filters.enddate
-	##	enddate = ''
-		##startdate = filters.startdate
-	##	startdate = ''
-	#enddate=''
-	#cur_user = request.user
-	##logger.info(exername)
-	#if exername == 'all':
-		#if enddate == '':
-			#exercises = Exercise.objects.filter(owner=cur_user).all().order_by('-date')
-		#else:
-			#exercises = Exercise.objects.filter(owner=cur_user, 
-					#date__lte=enddate, date__gte=startdate).all().order_by('-date')
-	#else:
-		##exercises = Exercise.objects.filter(owner=cur_user, date__lte=enddate, 
-		##        date__gte=startdate, sport=exername).all().order_by('-date')
-		#exercises = Exercise.objects.filter(owner=cur_user,  
-		         #sport=exername).all().order_by('-date')
-	##exercises = Exercise.objects.filter(owner=cur_user).all().order_by('-date')
-	##date__lte='date_joka_suurin, date__gte='date_joka pienin'
-	#try:
-		#total_distance = Stats.totals(exercises, 'distance')
-		#total_time = Stats.totaltime(exercises)
-		
-		#total_count = Stats.number_of_exs(exercises)
-		
-		#aver_distance = round(Stats.averages(exercises, 'distance'),2)
-		#aver_time = Stats.avertime(exercises)
-	#except TypeError:
-		#total_distance = 'NONE'
-		#total_time = 'NONE'
-		#total_count = 'NONE'
-		#aver_distance = 'NONE'
-		#aver_time = 'NONE'
-		
-	#table = ExerciseTable(exercises)
-	#RequestConfig(request).configure(table)
-	##return render(request, 'distances/people.html', {'table': table})
-	
-	#context = {'table': table, 'total': total_distance,
-	            #'totaltime': total_time, 'count': total_count,
-	            #'average': aver_distance, 'averagetime': aver_time,
-	            #'form': form}#, 'form_date': form_date}	
-	##context = {'exercises': exercises, 'total': total_distance,
-	##            'totaltime': total_time, 'count': total_count,
-	##            'average': aver_distance, 'averagetime': aver_time,
-	##            'form': form, 'form_date': form_date}
-	
-	##context = {'exercises': exercises, 'total': Stats.total(cur_user, sport=exername),
-	            ##'totaltime': Stats.totaltime(cur_user, sport=exername), 
-	            ##'form': form, 'form_date': form_date}
-	
-	
-	##check_topic_owner(exercises, cur_user)
-	
-	#return render(request, 'distances/exercises.html', context)
 
 @login_required
 def edit_exercise(request, exercise_id):
@@ -392,14 +215,14 @@ def edit_exercise(request, exercise_id):
 	check_exercise_owner(entry, cur_user)
 	if request.method != 'POST':
 		# Initial request; pre-fill form from the current entry.
-		form = ExerciseForm(instance=entry)
+		form = EditExerciseForm(instance=entry)
 	else:
 		# POST data submitted; process data
 		if request.POST.get('delete'):
 			entry.delete()
 			return HttpResponseRedirect(reverse('distances:exercises'))
 		
-		form = ExerciseForm(instance=entry, data=request.POST)
+		form = EditExerciseForm(instance=entry, data=request.POST)
 		if form.is_valid():
 			form.save()
 			return HttpResponseRedirect(reverse('distances:exercises'))
@@ -435,21 +258,6 @@ def exercise(request, exercisename):
 	            'totaltime': Stats.totaltime(cur_user, sport=e)}
 	return render(request, 'distances/exercises.html', context)
 
-
-
-#def get_sport_form(request):
-	#"""gets sport from sport form"""
-	#if request.method != 'POST':
-		#form = SportForm()
-	#else:
-		#form = SportForm(data=request.POST)
-		#if form.is_valid():
-			#exercise_name = form.cleaned_data['field']
-	
-	#if 'exercise_name' in locals():
-		#return {'form': form, 'exercise_name': exercise_name}
-	#else:
-		#return {'form': form}
 		
 @login_required
 def graphs(request):

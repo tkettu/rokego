@@ -17,13 +17,19 @@ class ExerciseTable(tables.Table):
 			)
 	date = tables.DateColumn(accessor='date', verbose_name='Date', format='d-m-Y')
 	distance = tables.Column(accessor='distance', verbose_name='Distance (km)')
+	#selectmany = tables.CheckBoxColumn(checked=False)
+	selectmany = tables.TemplateColumn(
+			template_code='<input type="checkbox" name="checks" value="{{ record.id }}" />',
+			verbose_name = 'Delete?',
+			orderable=False
+			)
 	
 		
 	class Meta:
 		model = Exercise
 		attrs = {'class': 'paleblue'}
-		fields = ('sport', 'time', 'distance', 'aver_speed', 'date', 'edit_entries')
-		sequence = ('sport', 'distance', 'time', 'aver_speed', 'date', 'edit_entries')
+		fields = ('sport', 'time', 'distance', 'aver_speed', 'date', 'edit_entries', 'selectmany')
+		sequence = ('sport', 'distance', 'time', 'aver_speed', 'date', 'edit_entries', 'selectmany')
 	
 	
 	def get_bottom_pinned_data(self):

@@ -13,18 +13,8 @@ from crispy_forms.layout import (
 class DateInput(forms.DateInput):
 	input_type = 'date'
 	#class = 'datepicker'
-	
-class ExerciseForm(forms.ModelForm):
-	
-	def __init__(self, *args, **kwargs):
-		super(ExerciseForm, self).__init__(*args, **kwargs)
-		
-		self.helper = FormHelper(self)
-		self.helper.label_class = 'col-sm-2'
-		self.helper.field_class = 'col-sm-10'
-		self.fields['sub_sport'].required = False
-		self.fields['text'].required = False
-		self.helper.layout = Layout(
+
+exercise_layout = Layout(
 			Div(
 				   Div(Fieldset('','sport', 'sub_sport', 'date'), css_class='col-md-4',),
 				   Div(Fieldset('Time', 'hours', 'minutes' ), css_class='col-md-2',),
@@ -38,6 +28,38 @@ class ExerciseForm(forms.ModelForm):
 				   css_class='row'
 				),
 			Field('text', rows="3", css_class='input-xlarge'),
+			#ButtonHolder(
+			#	Submit('submit','Submit'),
+			#	Submit('submitother', 'Save and add other')
+			#	),
+				#css_class='row'
+				#), #/Div
+			)
+
+class ExerciseForm(forms.ModelForm):
+	
+	def __init__(self, *args, **kwargs):
+		super(ExerciseForm, self).__init__(*args, **kwargs)
+		
+		self.helper = FormHelper(self)
+		self.helper.label_class = 'col-sm-2'
+		self.helper.field_class = 'col-sm-10'
+		self.fields['sub_sport'].required = False
+		self.fields['text'].required = False
+		self.helper.layout = Layout(
+			exercise_layout,
+			#Div(
+			#	   Div(Fieldset('','sport', 'sub_sport', 'date'), css_class='col-md-4',),
+			##	   Div(Fieldset('Distance', 'distance'), css_class='col-md-2',),
+				   #Div('hours', 'minutes',label='Time', css_class='col-md-2', ),
+				   #Div('sport', 'hours',  'date', css_class='col-md-2',),
+				   #Div('sub_sport', 'minutes', css_class='col-md-2', ),
+				   #Div('distance', css_class='col-md-2',),
+				   
+				   #Div('endDate', css_class='col-md-2',),
+			#	   css_class='row'
+			#	),
+			#Field('text', rows="3", css_class='input-xlarge'),
 			ButtonHolder(
 				Submit('submit','Submit'),
 				Submit('submitother', 'Save and add other')
@@ -66,7 +88,17 @@ class ExerciseForm(forms.ModelForm):
 		#}
 		
 		
-		          
+class EditExerciseForm(ExerciseForm):
+	def __init__(self, *args, **kwargs):
+		super(EditExerciseForm, self).__init__(*args, **kwargs)
+		#self.helper = FormHelper(self)
+		self.helper.layout = Layout(
+			exercise_layout,
+			ButtonHolder(
+				Submit('submit','Save changes'),
+				HTML('<button name="delete" class="btn btn-warning pull-right" value="remove">Delete</button>')
+			),
+		)
 
 
 class SportForm(forms.Form):
@@ -110,7 +142,8 @@ class ExerciseFilterFormHelper(FormHelper):
 		ButtonHolder(
 			Submit('submit', 'Apply'),
 			#HTML('<a  class="btn btn-large btn-info" href="{% url \'distances:new_exercise\' %}"> Add New </a>')
-			HTML('<a  class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal" > Add New </a>')
+			HTML('<a  class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal" > Add New </a>'),
+			HTML('<button name="delete" class="btn btn-warning pull-right" value="Delete items">Delete selected</button>')
 			),
 			
 		)

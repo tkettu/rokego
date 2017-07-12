@@ -17,7 +17,7 @@ urlpatterns = [
     
     # page for adding new exercises
     url(r'^new_exercise/$', views.new_exercise, name='new_exercise'),
-    url(r'^new_exercise2/$', views.index, name='new_exercise2'),
+    #url(r'^new_exercise2/$', views.new_exercise_modal, name='new_exercise2'),
     
     # Page for displaying user records
     url(r'^records/$', views.records, name='records'),

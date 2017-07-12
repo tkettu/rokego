@@ -2,22 +2,14 @@
 {% load bootstrap3 %}
 
 {% block header %}
-  <h2>Muokkaa  merkintää</h2>
+  <h2>Edit exercise</h2>
 {% endblock header %}
 
 {% block content %}
   
-  
-  
-  <form action="{% url 'distances:edit_exercise' exercise.id %}" method='post' class="form">
-  
-    {% csrf_token %}
-	{% bootstrap_form form %}
+    
+	{% load crispy_forms_tags %}
+	{% crispy form %}
 	
-	{% buttons %}
-	  <button name="submit" class="btn btn-primary" value="save">tallenna muutokset</button>
-	  <button name="delete" class="btn btn-warning pull-right" value="remove">Poista suoritus</button>
-	{% endbuttons %}
-  </form>
-  
+	
 {% endblock content %}
