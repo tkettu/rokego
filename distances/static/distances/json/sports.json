@@ -1,0 +1,8 @@
+// Sports
+{
+    "Running": ["","Road running","Trail running", "Cross country running", "Nordic running"],
+    "Skiing": ["","Classic", "Skate skiing", "Ski touring"],
+    "Walking": ["", "Hiking", "Nordic walking", "Dog walking"],
+    "Cycling": ["", "Road", "Mountain", "Track"],
+    "Swimming": [""]
+}

@@ -2,30 +2,11 @@
 {% load bootstrap3 %}
 
 {% block header %}
-  <h2>Kuvaajat</h2>
+  <h2>Graphs</h2>
 {% endblock header %}
 
 {% block content %}
   
-  <h4>{{ graph }}
-  <button onclick="myFunction()">Try it</button>
+<h4>{{ graph }}</h4>
 
-<div id="myDIV" style="display: none">
-This is my DIV element.
-</div>
-
-<p><b>Note:</b> The element will not take up any space when the display property set to "none".</p>
-
-<script>
-function myFunction() {
-    var x = document.getElementById('myDIV');
-    if (x.style.display === 'none') {
-        x.style.display = 'block';
-    } else {
-        x.style.display = 'none';
-    }
-}
-</script>
-  
-  
 {% endblock content %}

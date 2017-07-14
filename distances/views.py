@@ -13,13 +13,13 @@ from django.db.models import Sum
 from django_filters.views import FilterView
 
 
-from .models import Exercise, Person
+from .models import Exercise
 from .forms import (
-					ExerciseForm, SportForm, DateForm, 
+					ExerciseForm, SportForm, #DateForm, 
 					ExerciseFilterFormHelper, RecordFilterFormHelper,
 					EditExerciseForm
 					)
-from .tables import PersonTable, ExerciseTable
+from .tables import  ExerciseTable
 from distances.filters import ExerciseFilter, RecordFilter
 
 from distances.helpers.stats import Stats
@@ -95,13 +95,15 @@ def exercises(request):
 	# Add new exercise with modal
 	ret_url = 'distances:exercises'
 	if request.method != 'POST':
-		if request.GET.get('delete'):
-			# TODO, implement working multi deleta
-			items = request.GET.getlist('checks')
-			print(items)
+		
 		form = ExerciseForm()
 		
 	else:
+		
+		if request.POST.get('delete'):
+			# TODO, implement working multi deleta
+			#print(request.POST.getlist('checks'))
+			items = request.POST.getlist('checks')
 	
 		modaln = new_exercise_modal(request, ret_url)
 		if modaln[1]:
@@ -274,17 +276,4 @@ def check_exercise_owner(exercise, user):
 def get_stats(cur_user, sport='all'):
 	""" method for averages total ..."""
 	
-
-#Tutorial for django-tables2
-def people(request):
-	table = PersonTable(Person.objects.all())
-	RequestConfig(request).configure(table)
-	return render(request, 'distances/people.html', {'table': table})	
-
-#class FilteredPersonListView(FilterView, SingleTableView):
-	#table_class = PersonTable
-	#model = Person
-	#template_name = 'people.html'
-	
-	#filterset_class = PersonFilter
 		

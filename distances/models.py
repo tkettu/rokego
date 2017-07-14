@@ -92,19 +92,19 @@ class Exercise(models.Model):
 		
 
 	
-def get_time_before(days):
-	return datetime.today() - timedelta(days=days)
+#def get_time_before(days):
+#	return datetime.today() - timedelta(days=days)
 	
-class Dates(models.Model):
-	today = datetime.now
-	week_ago= get_time_before(days=7) #Does this work always???date
-	startDate = models.DateField(default=week_ago)
-	endDate = models.DateField(default=today)
+#class Dates(models.Model):
+#	today = datetime.now
+#	week_ago= get_time_before(days=7) #Does this work always???date
+#	startDate = models.DateField(default=week_ago)
+#	endDate = models.DateField(default=today)
 	
 #Tutorial for django-tables2
-class Person(models.Model):
-	name = models.CharField(verbose_name="full name", max_length=200)
-	tags = models.CharField(max_length=20, default='')
+#class Person(models.Model):
+#	name = models.CharField(verbose_name="full name", max_length=200)
+#	tags = models.CharField(max_length=20, default='')
 	
 	
 	#def distance(self):

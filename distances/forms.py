@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Exercise, Dates
+from .models import Exercise#, Dates
 
 import datetime as DT
 import distances.helpers.sports as spo
@@ -96,7 +96,8 @@ class EditExerciseForm(ExerciseForm):
 			exercise_layout,
 			ButtonHolder(
 				Submit('submit','Save changes'),
-				HTML('<button name="delete" class="btn btn-warning pull-right" value="remove">Delete</button>')
+				HTML('<button name="delete" class="btn btn-warning pull-right" \
+						value="remove" >Delete</button>')
 			),
 		)
 
@@ -110,15 +111,15 @@ class SportForm(forms.Form):
 	      widget=forms.Select(attrs={'onchange': 'SportForm.submit();'}))
 	#field = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
 
-class DateForm(forms.ModelForm):
-	class Meta:
-		model = Dates
-		fields = ['startDate', 'endDate']
-		labels = {'startDate': 'Start Date', 'endDate': 'End Date'}
-		widgets = {
-		    'startDate': DateInput(),
-		    'endDate': DateInput(),
-		}
+#class DateForm(forms.ModelForm):
+#	class Meta:
+#		model = Dates
+#		fields = ['startDate', 'endDate']
+#		labels = {'startDate': 'Start Date', 'endDate': 'End Date'}
+#		widgets = {
+#		    'startDate': DateInput(),
+#		    'endDate': DateInput(),
+#		}
 	
 class ExerciseFilterFormHelper(FormHelper):
 	form_method = 'GET'
@@ -129,7 +130,6 @@ class ExerciseFilterFormHelper(FormHelper):
    		    #'Filters',
 		    #'sport',
 			Div(
-				
 				Div('sport', css_class='col-md-2',),
 				Div('sub_sport', css_class='col-md-2',),
 				Div('startDate', 'endDate', css_class='col-md-2', ),
@@ -142,8 +142,10 @@ class ExerciseFilterFormHelper(FormHelper):
 		ButtonHolder(
 			Submit('submit', 'Apply'),
 			#HTML('<a  class="btn btn-large btn-info" href="{% url \'distances:new_exercise\' %}"> Add New </a>')
-			HTML('<a  class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal" > Add New </a>'),
-			HTML('<button name="delete" class="btn btn-warning pull-right" value="Delete items">Delete selected</button>')
+			HTML('<a  class="btn btn-large btn-info" data-toggle="modal"  \
+				data-target="#exerciseModal" > Add New </a>'),
+			#HTML('{% csrf_token %} <button name="delete" class="btn btn-warning pull-right" \
+			#	value="Delete items" formmethod="post">Delete selected</button>')
 			),
 			
 		)
