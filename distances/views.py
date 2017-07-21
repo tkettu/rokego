@@ -44,7 +44,7 @@ exername = 'all'
 enddate = ''
 startdate = ''
 
-sport_choises = 'distances\json\sports.json'
+sport_choises = 'distances/json/sports.json'
 
 
 def index(request):

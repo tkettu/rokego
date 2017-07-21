@@ -20,7 +20,7 @@ class DateInput(forms.DateInput):
 
 
 
-sport_choises = 'distances\json\sports.json'
+sport_choises = 'distances/json/sports.json'
 owndefault = "Running"
 
 exercise_layout = Layout(
