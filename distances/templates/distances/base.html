@@ -23,6 +23,7 @@
       <title>Rokego - Tool to track your endurance sports</title>
 	{% bootstrap_javascript %}
 	<script src="{% static 'distances/javascript/elementHandlers.js' %}"></script>
+	<script src="{% static 'distances/javascript/subsports.js' %}"></script>
 	<!-- {% bootstrap_css %}
 	
 	<script src="{% static 'distances/sorttable.js' %}"></script>-->
@@ -35,6 +36,12 @@
       $( "#id_date" ).datepicker();
     });
     </script>
+	<script type="text/javascript">
+    json_data = {{ subsports|safe }};
+   
+	</script>
+
+	
 	<style>
 	
 	  /* Remove the navbar's default margin-bottom and rounded borders */ 

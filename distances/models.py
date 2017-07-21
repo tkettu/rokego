@@ -2,7 +2,7 @@ from django.db import models
 from . fields import IntegerRangeField as irf
 from django.contrib.auth.models import User
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 import distances.helpers.sports as spo
 
 #from django.utils import timezone
@@ -35,6 +35,7 @@ class Exercise(models.Model):
 	distance = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 	date = models.DateField(default=datetime.now)
 	
+	#testtime = models.TimeField(default=time(0,0,0), blank=True)
 	#days = irf(min_value=1, max_value=1000, default = 10)
 	
 	owner = models.ForeignKey(User)
@@ -88,27 +89,3 @@ class Exercise(models.Model):
 			hoursD = int(self.hours) + int(self.minutes)/60
 			return round(dis/hoursD, 2)
 	
-	
-		
-
-	
-#def get_time_before(days):
-#	return datetime.today() - timedelta(days=days)
-	
-#class Dates(models.Model):
-#	today = datetime.now
-#	week_ago= get_time_before(days=7) #Does this work always???date
-#	startDate = models.DateField(default=week_ago)
-#	endDate = models.DateField(default=today)
-	
-#Tutorial for django-tables2
-#class Person(models.Model):
-#	name = models.CharField(verbose_name="full name", max_length=200)
-#	tags = models.CharField(max_length=20, default='')
-	
-	
-	#def distance(self):
-	#	return str(self.distance)
-	
-	            
-	       

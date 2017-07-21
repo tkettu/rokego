@@ -4,6 +4,7 @@ from datetime import timedelta, date
 
 import calendar
 import collections
+from collections import Counter
 
 
 #def longest_period(user, days=7, sport='all'):
@@ -85,7 +86,17 @@ def month_results(exercises):
 	
 	return monthtotals
 	
-
+def get_most_common(exercises, n=3):
+	""" Get n most common sports """
+	exes = [e.sport for e in exercises]
+	cnt = Counter()
+	for e in exes:
+		cnt[e] +=1
+	
+	commons = cnt.most_common(n)
+	commons_array = [co[0] for co in commons]
+	return commons_array
+	
 def get_exercises(user, sport, order):
 	if sport == 'all':
 		return Exercise.objects.filter(owner=user).order_by('date')

@@ -12,6 +12,7 @@ from django.db.models import Sum
 
 from django_filters.views import FilterView
 
+import json
 
 from .models import Exercise
 from .forms import (
@@ -34,6 +35,7 @@ from datetime import datetime, date
 
 import logging
 
+#Debugging
 #import pdb; pdb.set_trace()
 
 logger = logging.getLogger(__name__)
@@ -42,6 +44,7 @@ exername = 'all'
 enddate = ''
 startdate = ''
 
+sport_choises = 'distances\json\sports.json'
 
 
 def index(request):
@@ -76,7 +79,8 @@ def index(request):
 			form = modaln[0]
 			
 		context = {'dist': tot, 'time' : tottime, 'distm': tot_m, 
-			'timem': tottime_m, 'exercises': exes10, 'form': form}
+			'timem': tottime_m, 'exercises': exes10, 'form': form, 
+			'subsports': get_sports_json()}
 		
 	else:
 		context = {'link':'https://www.youtube.com/watch?v=tENiCpaIk9A'}
@@ -120,6 +124,7 @@ def exercises(request):
 	context['table'] = table
 	#context['form'] = modalForm
 	context['form'] = form
+	context['subsports'] = get_sports_json()
 	response = render(request, 'distances/exercises.html', context)
 	return response
 
@@ -143,7 +148,13 @@ def new_exercise_modal(request, ret_url):
 			isForm = True
 			#return HttpResponseRedirect(reverse('distances:new_exercise'))
 	return [form, isForm, ret_url]
-	
+
+def get_sports_json():
+	with open(sport_choises) as f:
+		data = json.load(f)
+		js_data = json.dumps(data)
+		return js_data
+			
 @login_required	
 def new_exercise(request):
 	"""Add a new exercise."""
@@ -264,8 +275,10 @@ def exercise(request, exercisename):
 @login_required
 def graphs(request):
 	""" Display graphs"""
-	
-	context = {'graph': 'There is distance-time graph etc.'}
+	exes = Exercise.objects.filter(owner=request.user).all()
+	commons = rec.get_most_common(exes)
+	#context = {'graph': 'There is distance-time graph etc.'}
+	context = {'graph': commons}
 	return render(request, 'distances/graphs.html', context)	
 
 def check_exercise_owner(exercise, user):

@@ -103,7 +103,3 @@ class ExerciseTable(tables.Table):
 	#		).order_by(amount)
 	#	return (queryset, True)
 
-#class PersonTable(tables.Table):
-#	class Meta:
-#		model = Person
-#		attrs = {'class': 'paleblue'}

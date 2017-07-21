@@ -10,15 +10,30 @@ from crispy_forms.layout import (
 			Submit, Layout, Fieldset, ButtonHolder, 
 			Div, HTML, Field
 			)
+
+import json
+from collections import OrderedDict
+
 class DateInput(forms.DateInput):
 	input_type = 'date'
 	#class = 'datepicker'
 
+
+
+sport_choises = 'distances\json\sports.json'
+owndefault = "Running"
+
 exercise_layout = Layout(
 			Div(
-				   Div(Fieldset('','sport', 'sub_sport', 'date'), css_class='col-md-4',),
-				   Div(Fieldset('Time', 'hours', 'minutes' ), css_class='col-md-2',),
-				   Div(Fieldset('Distance', 'distance'), css_class='col-md-2',),
+				   #Div(Fieldset('','sport', 'sub_sport', 'date'), css_class='col-md-4',),
+				   Div(Fieldset('','sport', 'sub_sport', 'date'), css_class='col-md-2'),
+				   #Div(Fieldset('Time', 'hours', 'minutes' ), css_class='col-md-2',),
+				   Div(Fieldset('', Div('hours', css_class='col-md-1'),
+					   Div('minutes', css_class='col-md-1'), 
+					  css_class='row-fluid',),
+					  ),
+				   Div(Fieldset('', 'distance'), css_class='col-md-2',),
+				   #Div(Field('distance'), css_class='col-md-2',),
 				   #Div('hours', 'minutes',label='Time', css_class='col-md-2', ),
 				   #Div('sport', 'hours',  'date', css_class='col-md-2',),
 				   #Div('sub_sport', 'minutes', css_class='col-md-2', ),
@@ -26,40 +41,61 @@ exercise_layout = Layout(
 				   
 				   #Div('endDate', css_class='col-md-2',),
 				   css_class='row'
+				   #css_class='container'
 				),
 			Field('text', rows="3", css_class='input-xlarge'),
-			#ButtonHolder(
-			#	Submit('submit','Submit'),
-			#	Submit('submitother', 'Save and add other')
-			#	),
-				#css_class='row'
-				#), #/Div
 			)
+def getChoices():
+	with open(sport_choises) as f:
+		data = json.load(f, object_pairs_hook=OrderedDict)
+		choices = []
+		for d in data:
+			choices.append((d, d))
+	return tuple(choices)
+	
+def getFieldChoices(key_field='Running'):
+	with open(sport_choises) as f:
+		json_data = json.load(f)
+		choices = []
+		if key_field  in json_data:
+			subfields = json_data[key_field]
+			for field in subfields:
+				choices.append((field, field))
+	return tuple(choices) 
+	#return d
+	
 
 class ExerciseForm(forms.ModelForm):
 	
 	def __init__(self, *args, **kwargs):
+		#self._key_field = kwargs.pop('sport', None)
+		#self._key_field = kwargs.pop('sport', 'Running')
 		super(ExerciseForm, self).__init__(*args, **kwargs)
-		
 		self.helper = FormHelper(self)
+		self.fields['sport'] = forms.ChoiceField(
+			choices = getChoices(),
+			initial = owndefault,
+			widget = forms.Select(attrs={			
+					#"onChange":"getSubSports(value)"
+					"onChange":"getSubSports()"
+					})
+		)
+		self.fields['sub_sport'] = forms.CharField(
+			#https://djangosteps.wordpress.com/2012/01/12/filtered-menus-in-django/
+			label = 'Type',
+			required = False,
+			initial = '',
+			widget = forms.Select()
+		)
+		self.fields['sub_sport'].widget.choices = getFieldChoices(owndefault)
+		
 		self.helper.label_class = 'col-sm-2'
 		self.helper.field_class = 'col-sm-10'
-		self.fields['sub_sport'].required = False
+		#self.fields['sub_sport'].required = False
 		self.fields['text'].required = False
 		self.helper.layout = Layout(
 			exercise_layout,
-			#Div(
-			#	   Div(Fieldset('','sport', 'sub_sport', 'date'), css_class='col-md-4',),
-			##	   Div(Fieldset('Distance', 'distance'), css_class='col-md-2',),
-				   #Div('hours', 'minutes',label='Time', css_class='col-md-2', ),
-				   #Div('sport', 'hours',  'date', css_class='col-md-2',),
-				   #Div('sub_sport', 'minutes', css_class='col-md-2', ),
-				   #Div('distance', css_class='col-md-2',),
-				   
-				   #Div('endDate', css_class='col-md-2',),
-			#	   css_class='row'
-			#	),
-			#Field('text', rows="3", css_class='input-xlarge'),
+		
 			ButtonHolder(
 				Submit('submit','Submit'),
 				Submit('submitother', 'Save and add other')
@@ -72,20 +108,14 @@ class ExerciseForm(forms.ModelForm):
 	class Meta:
 		model = Exercise
 		#fields = []
-		fields = [ 'sport', 'sub_sport', 'hours', 'minutes','distance', 'date', 'text']
-		labels = {'sport': 'Sport', 'sub_sport': 'Sub sport', 'hours': 'hours', 'minutes': 'minutes',   
-		          'distance': 'kilometers', 'date': 'date', 'text': 'description'}
+		fields = [ 'sport', 'sub_sport', 'hours', 'minutes', 'distance', 'date', 'text']
+		labels = {'sport': 'Sport', 'sub_sport': 'Type', 'hours': 'Hours', 'minutes': 'Minutes',   
+		          'distance': 'Kilometers', 'date': 'Date', 'text': 'Description'}
 		
 		widgets = {
-		    #'date': DateInput(),
-		    #'date': forms.DateInput(format=('%d-%m-%Y'),attrs={'class': 'datepicker'}),
 		    'date': forms.DateInput(attrs={'class': 'datepicker'}),
 		    'text': forms.Textarea(attrs={'cols': 80}),
 		}
-		#widgets = {
-		#    'date': forms.TextInput(attrs={'type': 'date'}),
-		#    'text': forms.Textarea(attrs={'cols': 80}),
-		#}
 		
 		
 class EditExerciseForm(ExerciseForm):
@@ -109,17 +139,7 @@ class SportForm(forms.Form):
 	#field = forms.ChoiceField(choices=CHOICES)
 	field = forms.ChoiceField(choices=CHOICES,  
 	      widget=forms.Select(attrs={'onchange': 'SportForm.submit();'}))
-	#field = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
-
-#class DateForm(forms.ModelForm):
-#	class Meta:
-#		model = Dates
-#		fields = ['startDate', 'endDate']
-#		labels = {'startDate': 'Start Date', 'endDate': 'End Date'}
-#		widgets = {
-#		    'startDate': DateInput(),
-#		    'endDate': DateInput(),
-#		}
+	
 	
 class ExerciseFilterFormHelper(FormHelper):
 	form_method = 'GET'
@@ -174,20 +194,3 @@ class RecordFilterFormHelper(FormHelper):
 			Submit('submit', 'Apply')
 			)
 		)
-	#class Meta:
-	#	model = Exercise
-	#	widgets = {
-	#	    'startDate': DateInput(),
-	#	    'endDate': DateInput(),
-	#		}
-	#class Meta:
-		#model = Exercise
-		#fields = ['startDate', 'endDate', 'sport']
-		#labels = {'startDate': 'Start Date', 'endDate': 'End Date', 'sport': 'Sport'}
-		#widgets = {
-		    #'startDate': DateInput(),
-		    #'endDate': DateInput(),
-		#}
-
-
-    

@@ -27,9 +27,7 @@ urlpatterns = [
     
     # Page for editing an exercise
     url(r'^edit_exercise/(?P<exercise_id>\d+)/$', views.edit_exercise, name='edit_exercise'),
-    
-   
-    
+
     ## Password reset
     url('^', include('django.contrib.auth.urls')),
 
