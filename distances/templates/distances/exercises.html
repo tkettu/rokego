@@ -6,15 +6,16 @@
 
 {% block header %}
 <!--	<h1>Exercises</h1>--><button class="btn btn-info" onclick="showElement('id_filter_set')">Filters</button>
+<a class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal">Add new exercise</a>
 {% endblock header %}
 
 {% block content %}
  
- 
+{% include "distances/new_exersise2.html" %} 
   <div id="id_filter_set" style="display: none" >
     {% crispy filter.form filter.form.helper %}
    </div>	
     {% render_table table %}
 
-{% include "distances/new_exersise2.html" %}
-   {% endblock content %}
+
+{% endblock content %}

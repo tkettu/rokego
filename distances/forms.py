@@ -162,8 +162,8 @@ class ExerciseFilterFormHelper(FormHelper):
 		ButtonHolder(
 			Submit('submit', 'Apply'),
 			#HTML('<a  class="btn btn-large btn-info" href="{% url \'distances:new_exercise\' %}"> Add New </a>')
-			HTML('<a  class="btn btn-large btn-info" data-toggle="modal"  \
-				data-target="#exerciseModal" > Add New </a>'),
+			#HTML('<a  class="btn btn-large btn-info" data-toggle="modal"  \
+			#	data-target="#exerciseModal" > Add New </a>'),
 			#HTML('{% csrf_token %} <button name="delete" class="btn btn-warning pull-right" \
 			#	value="Delete items" formmethod="post">Delete selected</button>')
 			),

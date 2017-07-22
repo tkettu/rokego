@@ -182,7 +182,7 @@ def new_exercise(request):
 				messages.info(request, msg)
 				return HttpResponseRedirect(reverse('distances:new_exercise'))
 		
-	context = {'form': form}
+	context = {'form': form, 'subsports': get_sports_json()}
 	return render(request, 'distances/new_exercise.html', context)
 
 
