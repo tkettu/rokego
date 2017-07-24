@@ -4,5 +4,6 @@
     "Walking": [" ", "Hiking", "Nordic walking", "Dog walking"],
     "Cycling": [" ", "Road", "Mountain", "Track"],
     "Swimming": [" ", "Open water", "Pool"],
+	"Rowing": [" "],
 	"Other": [" "]
 }

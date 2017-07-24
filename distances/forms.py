@@ -3,7 +3,8 @@ from django import forms
 from .models import Exercise#, Dates
 
 import datetime as DT
-import distances.helpers.sports as spo
+#import distances.helpers.sports as spo
+import distances.json.sports as spo
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (
@@ -11,8 +12,10 @@ from crispy_forms.layout import (
 			Div, HTML, Field
 			)
 
-import json
-from collections import OrderedDict
+#import json
+#from collections import OrderedDict
+
+
 
 class DateInput(forms.DateInput):
 	input_type = 'date'
@@ -20,7 +23,7 @@ class DateInput(forms.DateInput):
 
 
 
-sport_choises = 'distances/json/sports.json'
+#sport_choises = 'distances/json/sports.json'
 owndefault = "Running"
 
 exercise_layout = Layout(
@@ -45,24 +48,24 @@ exercise_layout = Layout(
 				),
 			Field('text', rows="3", css_class='input-xlarge'),
 			)
-def getChoices():
-	with open(sport_choises) as f:
-		data = json.load(f, object_pairs_hook=OrderedDict)
-		choices = []
-		for d in data:
-			choices.append((d, d))
-	return tuple(choices)
+#def getChoices():
+	#with open(sport_choises) as f:
+		#data = json.load(f, object_pairs_hook=OrderedDict)
+		#choices = []
+		#for d in data:
+			#choices.append((d, d))
+	#return tuple(choices)
 	
-def getFieldChoices(key_field='Running'):
-	with open(sport_choises) as f:
-		json_data = json.load(f)
-		choices = []
-		if key_field  in json_data:
-			subfields = json_data[key_field]
-			for field in subfields:
-				choices.append((field, field))
-	return tuple(choices) 
-	#return d
+#def getFieldChoices(key_field='Running'):
+	#with open(sport_choises) as f:
+		#json_data = json.load(f)
+		#choices = []
+		#if key_field  in json_data:
+			#subfields = json_data[key_field]
+			#for field in subfields:
+				#choices.append((field, field))
+	#return tuple(choices) 
+	##return d
 	
 
 class ExerciseForm(forms.ModelForm):
@@ -73,7 +76,7 @@ class ExerciseForm(forms.ModelForm):
 		super(ExerciseForm, self).__init__(*args, **kwargs)
 		self.helper = FormHelper(self)
 		self.fields['sport'] = forms.ChoiceField(
-			choices = getChoices(),
+			choices = spo.get_sport_choices(),
 			initial = owndefault,
 			widget = forms.Select(attrs={			
 					#"onChange":"getSubSports(value)"
@@ -87,7 +90,7 @@ class ExerciseForm(forms.ModelForm):
 			initial = '',
 			widget = forms.Select()
 		)
-		self.fields['sub_sport'].widget.choices = getFieldChoices(owndefault)
+		self.fields['sub_sport'].widget.choices = spo.getFieldChoices(owndefault)
 		
 		self.helper.label_class = 'col-sm-2'
 		self.helper.field_class = 'col-sm-10'
@@ -132,13 +135,13 @@ class EditExerciseForm(ExerciseForm):
 		)
 
 
-class SportForm(forms.Form):
-	#CHOICES = (('all', 'All'), ('Running', 'Running'),('Skiing', 'Skiing'),('Cycling', 'Cycling'),)
-	alla = ('all', 'All')
-	CHOICES = (alla,) + spo.SPORTS_CHOICES
-	#field = forms.ChoiceField(choices=CHOICES)
-	field = forms.ChoiceField(choices=CHOICES,  
-	      widget=forms.Select(attrs={'onchange': 'SportForm.submit();'}))
+#class SportForm(forms.Form):
+	##CHOICES = (('all', 'All'), ('Running', 'Running'),('Skiing', 'Skiing'),('Cycling', 'Cycling'),)
+	#alla = ('all', 'All')
+	#CHOICES = (alla,) + spo.SPORTS_CHOICES
+	##field = forms.ChoiceField(choices=CHOICES)
+	#field = forms.ChoiceField(choices=CHOICES,  
+	      #widget=forms.Select(attrs={'onchange': 'SportForm.submit();'}))
 	
 	
 class ExerciseFilterFormHelper(FormHelper):

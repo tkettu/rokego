@@ -9,7 +9,8 @@ import django_filters
 from .models import Exercise
 from .forms import DateInput
 
-import distances.helpers.sports as spo
+#import distances.helpers.sports as spo
+import distances.json.sports as spo
 #from django_fil
 
 class ExerciseFilter(django_filters.FilterSet):
@@ -26,16 +27,18 @@ class ExerciseFilter(django_filters.FilterSet):
 	#startDate = django_filters.DateFilter(
 	#			'start'
 	
-	sport = django_filters.MultipleChoiceFilter(choices=spo.SPORTS_CHOICES)
+	sport = django_filters.MultipleChoiceFilter(choices=spo.get_sport_choices())
 	sub_sport = django_filters.CharFilter(max_length=25)
+	#sub_sport = django_filters.ChoiceFilter(choices=spo.getFieldChoices())
 	
 	class Meta:
 		model = Exercise
 		fields=('sport', 'sub_sport', 'date', 'startDate', 'endDate')
 
 class RecordFilter(django_filters.FilterSet):
-	sport = django_filters.MultipleChoiceFilter(choices=spo.SPORTS_CHOICES)
+	sport = django_filters.MultipleChoiceFilter(choices=spo.get_sport_choices())
 	sub_sport = django_filters.CharFilter(max_length=25)
+	#year = django_filters.Choi
 	#days = django_filters.NumberFilter(label='Day count', name='days')
 	
 	class Meta:

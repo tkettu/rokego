@@ -12,11 +12,11 @@ from django.db.models import Sum
 
 from django_filters.views import FilterView
 
-import json
+#import json
 
 from .models import Exercise
 from .forms import (
-					ExerciseForm, SportForm, #DateForm, 
+					ExerciseForm, #SportForm, #DateForm, 
 					ExerciseFilterFormHelper, RecordFilterFormHelper,
 					EditExerciseForm
 					)
@@ -28,7 +28,8 @@ import distances.filters as filters
 
 
 import distances.helpers.records as rec
-import distances.helpers.sports as spo
+#import distances.helpers.sports as spo
+import distances.json.sports as spo
 
 from datetime import datetime, date
 
@@ -44,7 +45,7 @@ exername = 'all'
 enddate = ''
 startdate = ''
 
-sport_choises = 'distances/json/sports.json'
+#sport_choises = 'distances/json/sports.json'
 
 
 def index(request):
@@ -80,7 +81,7 @@ def index(request):
 			
 		context = {'dist': tot, 'time' : tottime, 'distm': tot_m, 
 			'timem': tottime_m, 'exercises': exes10, 'form': form, 
-			'subsports': get_sports_json()}
+			'subsports': spo.get_sports_json()}
 		
 	else:
 		context = {'link':'https://www.youtube.com/watch?v=tENiCpaIk9A'}
@@ -124,7 +125,7 @@ def exercises(request):
 	context['table'] = table
 	#context['form'] = modalForm
 	context['form'] = form
-	context['subsports'] = get_sports_json()
+	context['subsports'] = spo.get_sports_json()
 	response = render(request, 'distances/exercises.html', context)
 	return response
 
@@ -148,12 +149,6 @@ def new_exercise_modal(request, ret_url):
 			isForm = True
 			#return HttpResponseRedirect(reverse('distances:new_exercise'))
 	return [form, isForm, ret_url]
-
-def get_sports_json():
-	with open(sport_choises) as f:
-		data = json.load(f)
-		js_data = json.dumps(data)
-		return js_data
 			
 @login_required	
 def new_exercise(request):
@@ -182,7 +177,7 @@ def new_exercise(request):
 				messages.info(request, msg)
 				return HttpResponseRedirect(reverse('distances:new_exercise'))
 		
-	context = {'form': form, 'subsports': get_sports_json()}
+	context = {'form': form, 'subsports': spo.get_sports_json()}
 	return render(request, 'distances/new_exercise.html', context)
 
 
@@ -195,7 +190,7 @@ def stats(request):
 	filter = RecordFilter(request.GET, queryset = exercises)
 	filter.form.helper = RecordFilterFormHelper()
 		
-	sc = spo.SPORTS_CHOICES
+	#sc = spo.get_sport_choices()
 	ddays = [7,30,365]#, filter.get_days()]
 	
 	recs = []

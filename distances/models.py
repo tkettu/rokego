@@ -3,7 +3,8 @@ from . fields import IntegerRangeField as irf
 from django.contrib.auth.models import User
 
 from datetime import datetime, timedelta, time
-import distances.helpers.sports as spo
+#import distances.helpers.sports as spo
+import distances.json.sports as spo
 
 #from django.utils import timezone
 
@@ -18,7 +19,8 @@ class Exercise(models.Model):
 	#    (CYCLING, 'Cycling'),
 	#)
 	
-	SPORTS_CHOICES = spo.SPORTS_CHOICES
+	#SPORTS_CHOICES = spo.SPORTS_CHOICES
+	SPORTS_CHOICES = spo.get_sport_choices()
 	
 	sport = models.CharField(max_length=20,
 	                          choices=SPORTS_CHOICES,
