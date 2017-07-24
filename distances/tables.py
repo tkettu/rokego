@@ -6,6 +6,8 @@ from django.db.models import Sum, Avg
 
 from distances.helpers.stats import Stats
 
+import distances.helpers.records as rec
+
 class ExerciseTable(tables.Table):
 	time = tables.Column(accessor='time', verbose_name='Time', order_by=('hours', 'minutes'))
 	#aver_speed = tables.Column(verbose_name='Average speed')
@@ -103,3 +105,9 @@ class ExerciseTable(tables.Table):
 	#		).order_by(amount)
 	#	return (queryset, True)
 
+#class StatsTable(tables.Table):
+	
+	#time = 
+	#distance =
+#	class Meta:
+#		attrs = {'class': 'paleblue'}

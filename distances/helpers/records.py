@@ -57,19 +57,44 @@ def week_results(exercises):
 	
 	weeks = []
 	for e in exercises:
-		weekn = e.date.isocalendar()[1] #week number
-		yearn = e.date.isocalendar()[0] # e.date.year
-		weekYear = str(weekn) +'/' + str(yearn)
-		weeks.append((weekYear,e.distance)) #e.date.year
+		weekYear = get_week_year(e)
+		weeks.append((weekYear,e.distance, e.time_as_hours)) #e.date.year
 	
 	weektotals = collections.OrderedDict()
-	for k,v in weeks:
-		weektotals[k] = weektotals.get(k,0) + v
+	weektime = collections.OrderedDict()
+	for k,v1, v2 in weeks:
+		weektotals[k] = weektotals.get(k,0) + v1
+		weektime[k] = weektime.get(k,0) + v2
+		
+	tots = [weektotals, weektime]
+	tot = collections.OrderedDict()
+	for k in weektotals:
+		tot[k] = tuple(tot[k] for tot in tots)
 	
-	return weektotals
+	return tot
+	#return weektotals
 		
-		
+#def week_time(exercises):
+	#"""Return time for weeks."""
+	
+	#weeks = []
+	#for e in exercises:
+		#weekYear = get_week_year(e)
+		#weeks.append((weekYear,e.time_as_hours)) #e.date.year
+	
+	#weektotals = collections.OrderedDict()
+	#for k,v in weeks:
+		#weektotals[k] = weektotals.get(k,0) + v
+	
+	#return weektotals
+	
+	
 
+def get_week_year(e):
+	weekn = e.date.isocalendar()[1] # week number
+	yearn = e.date.isocalendar()[0] # year number
+	
+	return str(weekn) + '/' + str(yearn)
 	
 def month_results(exercises):
 	"""return results for different months."""
@@ -78,13 +103,22 @@ def month_results(exercises):
 		monthn = e.date.month
 		yearn = e.date.year
 		monthY = str(monthn) + '/' + str(yearn)
-		months.append((monthY, e.distance))
+		months.append((monthY, e.distance, e.time_as_hours))
 	
 	monthtotals = collections.OrderedDict()
-	for k,v in months:
+	monthtime = collections.OrderedDict()
+	for k,v,v2 in months:
 		monthtotals[k] = monthtotals.get(k,0) + v
+		monthtime[k] = monthtime.get(k,0) + v2
 	
-	return monthtotals
+	tots = [monthtotals, monthtime]
+	tot = collections.OrderedDict()
+	for k in monthtotals:
+		tot[k] = tuple(tot[k] for tot in tots)
+	
+	return tot
+	
+	#return monthtotals
 	
 def get_most_common(exercises, n=3):
 	""" Get n most common sports """

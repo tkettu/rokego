@@ -18,17 +18,17 @@
    width: 100px;
    }
  
- 
-#id_hours {
+/*#id_hours {
    width: 100px;
    }
-    
+  */    
 #id_minutes {
-   width: 100px;
+	position: relative;
+   /*width: 100px;*/
    }
-  
+
  #id_distance {
-   width: 100px;
+   width: 80px;
    }
   
  #id_date {
@@ -47,11 +47,15 @@
 	border-radius: 20px;
  }
  
- div[id=div_id_sport]{
+ /*div[id=div_id_sport]{
 	color: black;
 }
 
  div[id=div_id_sub_sport]{
+	color: black;
+}*/
+
+select[id=id_sport], select[id=id_sub_sport] {
 	color: black;
 }
 

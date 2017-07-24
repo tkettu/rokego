@@ -187,7 +187,7 @@ def new_exercise(request):
 
 
 @login_required
-def records(request):
+def stats(request):
 	""" Display different records"""
 	context = {}
 	exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
@@ -214,7 +214,7 @@ def records(request):
 	#context['month'] = months
 	
 	#context = {'form': form, 'recs': recs, 'weeks': weeks, 'ename': sport}
-	return render(request, 'distances/records.html', context)
+	return render(request, 'distances/stats.html', context)
 	
 
 @login_required

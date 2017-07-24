@@ -19,8 +19,8 @@ urlpatterns = [
     url(r'^new_exercise/$', views.new_exercise, name='new_exercise'),
     #url(r'^new_exercise2/$', views.new_exercise_modal, name='new_exercise2'),
     
-    # Page for displaying user records
-    url(r'^records/$', views.records, name='records'),
+    # Page for displaying user weekly, monthly stats
+    url(r'^stats/$', views.stats, name='stats'),
     
     # Page for displaying user records
     url(r'^graphs/$', views.graphs, name='graphs'),
