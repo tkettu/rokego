@@ -22,8 +22,9 @@ urlpatterns = [
     # Page for displaying user weekly, monthly stats
     url(r'^stats/$', views.stats, name='stats'),
     
-    # Page for displaying user records
+    # Page for displaying charts
     url(r'^graphs/$', views.graphs, name='graphs'),
+    #url(r'^graphs/
     
     # Page for editing an exercise
     url(r'^edit_exercise/(?P<exercise_id>\d+)/$', views.edit_exercise, name='edit_exercise'),

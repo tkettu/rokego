@@ -31,6 +31,8 @@ import distances.helpers.records as rec
 #import distances.helpers.sports as spo
 import distances.json.sports as spo
 
+import distances.graphs as gra
+
 from datetime import datetime, date
 
 
@@ -270,11 +272,13 @@ def exercise(request, exercisename):
 @login_required
 def graphs(request):
 	""" Display graphs"""
-	exes = Exercise.objects.filter(owner=request.user).all()
-	commons = rec.get_most_common(exes)
+	#exes = Exercise.objects.filter(owner=request.user).all()
+	#commons = rec.get_most_common(exes)
+	response = gra.graphs(request)
 	#context = {'graph': 'There is distance-time graph etc.'}
-	context = {'graph': commons}
-	return render(request, 'distances/graphs.html', context)	
+	#context = {'graph': commons}
+	#return render(request, 'distances/graphs.html', context)	
+	return response
 
 def check_exercise_owner(exercise, user):
 	if exercise.owner != user:
