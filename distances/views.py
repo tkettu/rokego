@@ -18,10 +18,10 @@ from .models import Exercise
 from .forms import (
 					ExerciseForm, #SportForm, #DateForm, 
 					ExerciseFilterFormHelper, RecordFilterFormHelper,
-					EditExerciseForm
+					EditExerciseForm, GraphFilterFormHelper
 					)
 from .tables import  ExerciseTable
-from distances.filters import ExerciseFilter, RecordFilter
+from distances.filters import ExerciseFilter, RecordFilter, GraphFilter
 
 from distances.helpers.stats import Stats
 import distances.filters as filters
@@ -268,17 +268,62 @@ def exercise(request, exercisename):
 	            'totaltime': Stats.totaltime(cur_user, sport=e)}
 	return render(request, 'distances/exercises.html', context)
 
-		
+
 @login_required
 def graphs(request):
 	""" Display graphs"""
-	#exes = Exercise.objects.filter(owner=request.user).all()
+	context = {}
+	
+	exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
+	
+	filter = GraphFilter(request.GET, queryset = exercises)
+	filter.form.helper = GraphFilterFormHelper()
 	#commons = rec.get_most_common(exes)
-	response = gra.graphs(request)
+	#response = gra.graphs(request)
+	#image(request, filter.qs)
+	
+	#imag = gra.graphs2(filter.qs)
+	context['filter'] = filter
+	#context['exercises'] = filter.qs
+	
+	reqget = request.GET.get('sport')
+	if reqget == "":
+		context['reqget'] = None
+	else:
+		context['reqget'] = reqget
 	#context = {'graph': 'There is distance-time graph etc.'}
+	#context['img'] = imag
+	
+	#context['graph'] = gra.graphs2(filter.qs)
 	#context = {'graph': commons}
-	#return render(request, 'distances/graphs.html', context)	
+	return render(request, 'distances/graphs.html', context)	
+	#return response
+
+
+		
+
+@login_required
+def image(request, filters):
+	
+	#exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
+	#exercises = Exercise.objects.filter(owner=request.user, sport=filters['sport']).all().order_by('-date')
+	if filters != None:
+		exercises = Exercise.objects.filter(owner=request.user, sport=filters).all().order_by('-date')
+	else:
+		exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
+	#filter = GraphFilter(request.GET, queryset = exercises)
+	#filter.form.helper = GraphFilterFormHelper()
+	response = gra.graphs2(exercises)
+	#response = gra.graphs2(filter.qs)
+	#response = gra.graphs2(f.qs)
+	#response = gra.graphs(request)
 	return response
+
+#@login_required
+#def image(request):
+	
+#	response = gra.graphs(request)
+#	return response
 
 def check_exercise_owner(exercise, user):
 	if exercise.owner != user:

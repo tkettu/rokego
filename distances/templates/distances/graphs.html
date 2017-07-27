@@ -1,12 +1,18 @@
 {% extends "distances/base.html" %}
 {% load bootstrap3 %}
+{% load  crispy_forms_tags %}
 
 {% block header %}
   <h2>Graphs</h2>
 {% endblock header %}
 
 {% block content %}
-  
-<h4>{{ graph }}</h4>
+
+
+<div>
+	{% crispy filter.form filter.form.helper %}
+</div>
+	
+<img id="id_image" src="{% url 'distances:image' reqget %}"></img>
 
 {% endblock content %}

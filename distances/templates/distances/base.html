@@ -36,10 +36,6 @@
       $( "#id_date" ).datepicker();
     });
     </script>
-	<script type="text/javascript">
-    json_data = {{ subsports|safe }};
-   
-	</script>
 
 	
 	<style>
@@ -96,6 +92,8 @@
 		  <ul class="nav navbar-nav">
 		    <li><a href="{% url 'distances:graphs' %}">Graphs</a></li>
 		  </ul>
+		  
+		  
 		  
 		  <ul class="nav navbar-nav navbar-right">
 		    {% if user.is_authenticated %}

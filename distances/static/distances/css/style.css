@@ -63,6 +63,10 @@ select[id=id_sport], select[id=id_sub_sport] {
 	color: black;
  }
  
+ img[id=id_image]{
+	max-width: 100%;
+ }
+ 
  
  
  /* Sortable tables */

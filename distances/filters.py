@@ -44,6 +44,22 @@ class RecordFilter(django_filters.FilterSet):
 	class Meta:
 		model = Exercise
 		fields=('sport', 'sub_sport',)# 'days',)
+
+class GraphFilter(django_filters.FilterSet):
+	date = django_filters.DateFilter()
+	date__gt = django_filters.DateFilter(label = 'Start date', name='date',
+					lookup_expr='gte',
+					widget=DateInput())
+	date__lt = django_filters.DateFilter(label = 'End date', name='date', 
+					lookup_expr='lte',
+					widget=DateInput())
 	
+	startDate = date__gt
+	endDate = date__lt
+	sport = django_filters.ChoiceFilter(choices=spo.get_sport_choices())
+	
+	class Meta:
+		model = Exercise
+		fields=('sport', 'startDate', 'endDate')
 	#def get_days(self):
 	#	return self.days

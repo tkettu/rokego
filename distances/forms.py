@@ -197,3 +197,25 @@ class RecordFilterFormHelper(FormHelper):
 			Submit('submit', 'Apply')
 			)
 		)
+
+class GraphFilterFormHelper(FormHelper):
+	form_method = 'GET'
+	layout = Layout(
+		Fieldset(
+			'',
+			Div(
+				Div('sport', css_class='col-md-2',),
+				Div('startDate', 'endDate', css_class='col-md-2', ),
+				css_class='row'
+			),
+		),
+		
+		ButtonHolder(
+			Submit('submit', 'Apply')
+			)
+		)
+	class Meta:
+		widgets = {
+			'startDate': forms.DateInput(attrs={'class': 'datepicker'}),
+			'endDate': forms.DateInput(attrs={'class': 'datepicker'}),
+		}
