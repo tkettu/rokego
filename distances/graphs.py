@@ -1,8 +1,10 @@
 """ Graphs.py , Handle graph view requests"""
 
 from .models import Exercise
-
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
 import django
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
