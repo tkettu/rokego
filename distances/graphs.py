@@ -10,6 +10,7 @@ from matplotlib.figure import Figure
 
 import matplotlib.cm as cm
 
+import distances.json.sports as spo
 #import PIL, PIL.Image, StringIO
 
 def graphs(request, sport='Running'):
@@ -47,7 +48,7 @@ def graphs2(exercises):
 		cc.append(e.sport)
 	
 	# TODO Take sports from JSON and assign colors
-	color_dict = {'Running': 'green', 'Skiing': 'blue', 'Cycling': 'blue', 'Walking': 'black', 'Swimming': 'purple'}
+	color_dict = get_color_dict()
 	#plt.scatter(d,t)
 	try:
 		ax.scatter(d,t, c=[ color_dict[i] for i in cc])
@@ -60,6 +61,17 @@ def graphs2(exercises):
 	
 	canvas.print_png(response)
 	return response
+
+def get_color_dict():
+	color_list = ['b', 'g', 'r', 'c', 'm', 'y', 'b', 'brown', 'purple', 'gold', 'darkgray', 'azure'] # ...
+	sl = spo.get_sport_choices()
+	sport_list = [s[0] for s in sl]
+	cd = {}
+	for i in range(len(sport_list)):
+		cd[sport_list[i]] = color_list[i]
+	
+	return cd
+		
 	#buffer = StringIO.StringIO()
 	#canvas = pylab.get_current_fig_manager().canvas
 	#canvas.draw()
