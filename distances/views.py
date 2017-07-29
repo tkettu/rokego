@@ -269,6 +269,9 @@ def exercise(request, exercisename):
 	return render(request, 'distances/exercises.html', context)
 
 
+# pattern for splitting multiple sports from graphs to image
+ptr = 'AND'
+
 @login_required
 def graphs(request):
 	""" Display graphs"""
@@ -286,11 +289,20 @@ def graphs(request):
 	context['filter'] = filter
 	#context['exercises'] = filter.qs
 	
-	reqget = request.GET.get('sport')
+	reqget = request.GET.getlist('sport')
+	print('REGGET GET ON {0}'.format(request.GET))
+	print('REGGET ON {0}'.format(reqget))
 	if reqget == "":
-		context['reqget'] = None
+		context['reqget'] = 'None'
 	else:
-		context['reqget'] = reqget
+		if len(reqget)!=0:
+			req = ''
+			for i in reqget:
+				req = req + i + ptr
+			context['reqget'] = req
+		else:
+			context['reqget'] = None
+	print('Kontektis reggeti {0}'.format(context['reqget']))
 	#context = {'graph': 'There is distance-time graph etc.'}
 	#context['img'] = imag
 	
@@ -307,12 +319,16 @@ def image(request, filters):
 	
 	#exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
 	#exercises = Exercise.objects.filter(owner=request.user, sport=filters['sport']).all().order_by('-date')
-	if filters != None:
-		exercises = Exercise.objects.filter(owner=request.user, sport=filters).all().order_by('-date')
+	if (filters != 'None'):# & (filters != ''):
+		filters = filters.split(ptr)
+		print('FILTERS {0}'.format(filters))
+		exercises = Exercise.objects.filter(owner=request.user, sport__in=filters).all().order_by('-date')
+		
 	else:
 		exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
 	#filter = GraphFilter(request.GET, queryset = exercises)
 	#filter.form.helper = GraphFilterFormHelper()
+	print("LENGHT {0}".format(len(exercises)))
 	response = gra.graphs2(exercises)
 	#response = gra.graphs2(filter.qs)
 	#response = gra.graphs2(f.qs)

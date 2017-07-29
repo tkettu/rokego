@@ -27,8 +27,6 @@ urlpatterns = [
     url(r'^image/$', views.image, name='image'),
 
     url(r'^image/(?P<filters>\w+)/$', views.image, name='image'),
-   # url(r'^image/(?P<filters>\w+)/$', views.image, name='image'),
-    #url(r'^graphs/image/$', views.get_image, name='single_image'),
     
     # Page for editing an exercise
     url(r'^edit_exercise/(?P<exercise_id>\d+)/$', views.edit_exercise, name='edit_exercise'),

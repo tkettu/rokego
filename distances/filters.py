@@ -56,7 +56,7 @@ class GraphFilter(django_filters.FilterSet):
 	
 	startDate = date__gt
 	endDate = date__lt
-	sport = django_filters.ChoiceFilter(choices=spo.get_sport_choices())
+	sport = django_filters.MultipleChoiceFilter(choices=spo.get_sport_choices())
 	
 	class Meta:
 		model = Exercise

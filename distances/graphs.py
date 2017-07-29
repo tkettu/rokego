@@ -8,6 +8,8 @@ import django
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
+import matplotlib.cm as cm
+
 #import PIL, PIL.Image, StringIO
 
 def graphs(request, sport='Running'):
@@ -18,12 +20,14 @@ def graphs(request, sport='Running'):
 	ax = fig.add_subplot(111)
 	d = []
 	t = []
+	cc = []
 	for e in exercises:
 		d.append(e.distance)
 		t.append(e.time_as_hours)
+		cc.append(e.sport)
 	
 	#plt.scatter(d,t)
-	ax.plot(d,t,'*')
+	ax.plot(d,t)
 	canvas = FigureCanvas(fig)
 	response = django.http.HttpResponse(content_type='image/png')
 	
@@ -36,12 +40,21 @@ def graphs2(exercises):
 	ax = fig.add_subplot(111)
 	d = []
 	t = []
+	cc = []
 	for e in exercises:
 		d.append(e.distance)
 		t.append(e.time_as_hours)
+		cc.append(e.sport)
 	
+	# TODO Take sports from JSON and assign colors
+	color_dict = {'Running': 'green', 'Skiing': 'blue', 'Cycling': 'blue', 'Walking': 'black', 'Swimming': 'purple'}
 	#plt.scatter(d,t)
-	ax.plot(d,t,'*')
+	try:
+		ax.scatter(d,t, c=[ color_dict[i] for i in cc])
+	except KeyError:
+		# plot without colors
+		ax.scatter(d,t)
+	
 	canvas = FigureCanvas(fig)
 	response = django.http.HttpResponse(content_type='image/png')
 	
