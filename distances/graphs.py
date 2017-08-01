@@ -11,6 +11,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 import matplotlib.cm as cm
+import matplotlib.patches as mpatches
 
 import distances.json.sports as spo
 #import PIL, PIL.Image, StringIO
@@ -37,6 +38,11 @@ def graphs(request, sport='Running'):
 	canvas.print_png(response)
 	return response
 
+
+color_list = ['b', 'g', 'r', 'c', 'm', 'y', 'black', 'brown', 'purple', 'gold', 'darkgray', 'azure']
+sl = spo.get_sport_choices()
+sport_list = [s[0] for s in sl]
+
 def graphs2(exercises):
 	
 	fig = Figure()
@@ -58,6 +64,20 @@ def graphs2(exercises):
 		# plot without colors
 		ax.scatter(d,t)
 	
+	recs = []
+	inds = list(set(cc))
+	sl = get_sport_list()
+	
+	for i in inds:#range(0,len(set(cc))):  # legend color for unique sport values
+		recs.append(mpatches.Rectangle((0,0),1,1,fc=color_list[sl.index(i)]))
+	
+	
+	fig.legend( recs, inds, 'right')
+	fig.suptitle("Roki")
+	
+	ax.set_xlabel('Distance')
+	ax.set_ylabel('Time')
+	#fig.axes(x='distance', y='time')
 	canvas = FigureCanvas(fig)
 	response = django.http.HttpResponse(content_type='image/png')
 	
@@ -65,15 +85,20 @@ def graphs2(exercises):
 	return response
 
 def get_color_dict():
-	color_list = ['b', 'g', 'r', 'c', 'm', 'y', 'b', 'brown', 'purple', 'gold', 'darkgray', 'azure'] # ...
-	sl = spo.get_sport_choices()
-	sport_list = [s[0] for s in sl]
+	#color_list = ['b', 'g', 'r', 'c', 'm', 'y', 'black', 'brown', 'purple', 'gold', 'darkgray', 'azure'] # ...
+	#sl = spo.get_sport_choices()
+	#sport_list = [s[0] for s in sl]
+	sport_list = get_sport_list()
 	cd = {}
 	for i in range(len(sport_list)):
 		cd[sport_list[i]] = color_list[i]
 	
 	return cd
-		
+
+def get_sport_list():
+	sl = spo.get_sport_choices()
+	sport_list = [s[0] for s in sl]	
+	return sport_list
 	#buffer = StringIO.StringIO()
 	#canvas = pylab.get_current_fig_manager().canvas
 	#canvas.draw()
