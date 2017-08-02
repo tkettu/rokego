@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^graphs/$', views.graphs, name='graphs'),
     url(r'^image/$', views.image, name='image'),
 
-    url(r'^image/(?P<filters>\w+)/$', views.image, name='image'),
+    url(r'^image/(?P<filters>.*)/$', views.image, name='image'),
     
     # Page for editing an exercise
     url(r'^edit_exercise/(?P<exercise_id>\d+)/$', views.edit_exercise, name='edit_exercise'),
