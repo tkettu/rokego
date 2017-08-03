@@ -1,6 +1,7 @@
 """ Graphs.py , Handle graph view requests"""
 
 from .models import Exercise
+import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -75,12 +76,38 @@ def graphs2(exercises):
 	
 	ax.set_xlabel('Distance')
 	ax.set_ylabel('Time')
+	#ax.get_xaxis().get_major_formatter().set_scientific(False)
+	
+	ax.get_xaxis().get_major_formatter().set_useOffset(False)
+	ax.get_yaxis().get_major_formatter().set_useOffset(False)
 	#fig.axes(x='distance', y='time')
 	canvas = FigureCanvas(fig)
 	response = django.http.HttpResponse(content_type='image/png')
 	
 	canvas.print_png(response)
 	return response
+
+def graph_dist_sum(exercises):
+	""" Cumulative distance of exercises """
+	fig = Figure()
+	ax = fig.add_subplot(111)
+	
+	exes = exercises.order_by('date')
+	
+	dist = np.array([e.distance for e in exes])
+	dat = [e.date for e in exes]
+	cum_sum = np.cumsum(dist)
+	
+	ax.plot(dat,cum_sum)
+	ax.set_xlabel('Date')
+	ax.set_ylabel('Cumulative distance')
+	
+	canvas = FigureCanvas(fig)
+	response = django.http.HttpResponse(content_type='image/png')
+	
+	canvas.print_png(response)
+	return response
+	
 
 def get_color_dict():
 	sport_list = get_sport_list()

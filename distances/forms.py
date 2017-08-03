@@ -193,12 +193,16 @@ class RecordFilterFormHelper(FormHelper):
 			),
 		),
 		
+		
 		ButtonHolder(
 			Submit('submit', 'Apply')
 			)
 		)
 
 class GraphFilterFormHelper(FormHelper):
+	
+	#graphchoices = ['scatter', 'cumsum']
+	
 	form_method = 'GET'
 	layout = Layout(
 		Fieldset(
@@ -209,11 +213,43 @@ class GraphFilterFormHelper(FormHelper):
 				css_class='row'
 			),
 		),
+		HTML('<select value="Graph" name="graphType">\
+				<option value="e"></option>\
+				<option value="s">Scatter</option>\
+				<option value="c">Cumulative sum</option>\
+			  </select>'
+			),
 		
 		ButtonHolder(
 			Submit('submit', 'Apply')
 			)
 		)
+	
+	#def __init__(self, *args, **kwargs):
+		##self._key_field = kwargs.pop('sport', None)
+		##self._key_field = kwargs.pop('sport', 'Running')
+		#super(GraphFilterFormHelper, self).__init__(*args, **kwargs)
+		#self.helper = FormHelper(self)
+		#graphType= forms.ChoiceField(
+			#choices = graphchoices
+			#)
+		
+		#self.helper.layout = Layout(
+			#Fieldset(
+				#'',
+				#Div(
+					#Div('sport', css_class='col-md-2',),
+					#Div('startDate', 'endDate', css_class='col-md-2', ),
+					#Div('graphType', css_class='col-md-2', ),
+					#css_class='row'
+				#),
+			#),
+			
+			#ButtonHolder(
+				#Submit('submit', 'Apply')
+				#)
+		#)
+		
 	class Meta:
 		widgets = {
 			'startDate': forms.DateInput(attrs={'class': 'datepicker'}),

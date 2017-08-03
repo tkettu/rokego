@@ -296,8 +296,9 @@ def graphs(request):
 	reqgets = request.GET.getlist('sport')
 	reqgetsD = request.GET.get('startDate')
 	reqgeteD = request.GET.get('endDate')
-	
-	context['reqget'] = set_image_filter(reqgets, reqgetsD, reqgeteD)
+	print("JA {0}".format(request.GET.get('graphType')))
+	reqgetGT = request.GET.get('graphType')
+	context['reqget'] = set_image_filter(reqgets, reqgetsD, reqgeteD, reqgetGT)
 	print(context['reqget'])
 	
 	#context = {'graph': 'There is distance-time graph etc.'}
@@ -308,7 +309,7 @@ def graphs(request):
 	return render(request, 'distances/graphs.html', context)	
 	#return response
 
-def set_image_filter(sp="", sd="", ed=""):
+def set_image_filter(sp="", sd="", ed="", gt="s"):
 	print("TYYYPPI {0}".format(type(sd)))
 	sd = str(sd)
 	ed = str(ed)
@@ -323,8 +324,10 @@ def set_image_filter(sp="", sd="", ed=""):
 		else:
 			#context['reqget'] = None
 			reqget = sptr + sd + eptr + ed
-	
-	return reqget
+	if isinstance(gt, str):
+		return reqget + "GTYPE" + gt
+	else:
+		return reqget + "GTYPEs"
 		
 
 @login_required
@@ -341,6 +344,11 @@ def image(request, filters):
 		#dates[0] is (hopefully) always ''
 		sd = dates[1]
 		ed = dates[2]
+		
+		gtype = ed.split("GTYPE")
+		ed = gtype[0]
+		gtype = gtype[1]
+		
 		
 		
 		if (ed == 'None') | (ed == ''):
@@ -364,7 +372,10 @@ def image(request, filters):
 	#filter = GraphFilter(request.GET, queryset = exercises)
 	#filter.form.helper = GraphFilterFormHelper()
 	
-	response = gra.graphs2(exercises)
+	if gtype == 's':
+		response = gra.graphs2(exercises)
+	elif gtype == 'c':
+		response = gra.graph_dist_sum(exercises)
 	#response = gra.graphs2(filter.qs)
 	#response = gra.graphs2(f.qs)
 	#response = gra.graphs(request)
