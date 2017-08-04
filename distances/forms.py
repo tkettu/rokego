@@ -14,7 +14,10 @@ from crispy_forms.layout import (
 
 #import json
 #from collections import OrderedDict
+import logging
 
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 class DateInput(forms.DateInput):
@@ -122,9 +125,17 @@ class ExerciseForm(forms.ModelForm):
 		
 		
 class EditExerciseForm(ExerciseForm):
-	def __init__(self, *args, **kwargs):
+	def __init__(self, sport="", sub_sport="", *args, **kwargs):
+	#def __init__(self, *args, **kwargs):
 		super(EditExerciseForm, self).__init__(*args, **kwargs)
 		#self.helper = FormHelper(self)
+		self.ownsport = sport
+		#self._key_field = kwargs.pop('sport', None)
+		
+		#logger.warning('SPORTTI ON {0}'.format(self._key_field))
+		#print('SPORTTI ON {0}'.format(ownsport))
+		self.fields['sub_sport'].widget.choices = spo.getFieldChoices(self.ownsport)
+		#self.fields['sub_sport'].widget.choices = spo.getFieldChoices(self._key_field)
 		self.helper.layout = Layout(
 			exercise_layout,
 			ButtonHolder(

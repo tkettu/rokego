@@ -226,7 +226,8 @@ def edit_exercise(request, exercise_id):
 	check_exercise_owner(entry, cur_user)
 	if request.method != 'POST':
 		# Initial request; pre-fill form from the current entry.
-		form = EditExerciseForm(instance=entry)
+		#form = EditExerciseForm(instance=entry, sport=entry.sport, sub_sport=entry.sub_sport)
+		form = EditExerciseForm(instance=entry, sport=entry.sport, sub_sport=entry.sub_sport)
 	else:
 		# POST data submitted; process data
 		if request.POST.get('delete'):
