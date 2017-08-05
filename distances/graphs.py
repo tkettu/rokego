@@ -108,7 +108,40 @@ def graph_dist_sum(exercises):
 	canvas.print_png(response)
 	return response
 	
-
+def box_plot(exercises, quant='distance'):
+	"""Returns boxplot (whiskers) from distances (or time) of exercises """
+	
+	# exercises to list of sport name and distances
+	#el = list(exercises.values('sport', quant))
+	
+	dd = []
+	for e in exercises:
+		di = float(e.distance) # e.quant
+		dd.append(di)
+	
+	# el to list of distances [['Running_distances'],['Walking_distances']]
+	#sports = [
+	# ell = []
+	fig = Figure()
+	ax = fig.add_subplot(111)
+	
+	ax.boxplot(dd)
+	#ax.boxplot(ell
+	# dd = {}
+	# for e in exes:
+	#	  di = float(e['distance'])
+	#	  dd.setdefault(e['sport'], []).append(e['distance'])
+	
+	#	dl = []
+	# for k,v in dd.items():
+	#	  dl.append(v)
+	canvas = FigureCanvas(fig)
+	response = django.http.HttpResponse(content_type='image/png')
+	
+	canvas.print_png(response)
+	return response
+	
+	
 def get_color_dict():
 	sport_list = get_sport_list()
 	cd = {}

@@ -377,6 +377,10 @@ def image(request, filters):
 		response = gra.graphs2(exercises)
 	elif gtype == 'c':
 		response = gra.graph_dist_sum(exercises)
+	elif gtype == 'b':
+		response = gra.box_plot(exercises)
+	else:
+		response = gra.graphs2(exercises)
 	#response = gra.graphs2(filter.qs)
 	#response = gra.graphs2(f.qs)
 	#response = gra.graphs(request)
