@@ -72,7 +72,7 @@ def graphs2(exercises):
 	
 	
 	fig.legend( recs, inds, 'right')
-	fig.suptitle("Roki")
+	fig.suptitle("Scatter plot")
 	
 	ax.set_xlabel('Distance')
 	ax.set_ylabel('Time')
@@ -112,12 +112,12 @@ def box_plot(exercises, quant='distance'):
 	"""Returns boxplot (whiskers) from distances (or time) of exercises """
 	
 	# exercises to list of sport name and distances
-	#el = list(exercises.values('sport', quant))
+	el = list(exercises.values('sport', quant))
 	
-	dd = []
-	for e in exercises:
-		di = float(e.distance) # e.quant
-		dd.append(di)
+	#dd = []
+	#for e in exercises:
+	#	di = float(e.distance) # e.quant
+	#	dd.append(di)
 	
 	# el to list of distances [['Running_distances'],['Walking_distances']]
 	#sports = [
@@ -125,16 +125,27 @@ def box_plot(exercises, quant='distance'):
 	fig = Figure()
 	ax = fig.add_subplot(111)
 	
-	ax.boxplot(dd)
-	#ax.boxplot(ell
-	# dd = {}
-	# for e in exes:
-	#	  di = float(e['distance'])
-	#	  dd.setdefault(e['sport'], []).append(e['distance'])
 	
-	#	dl = []
-	# for k,v in dd.items():
-	#	  dl.append(v)
+	#ax.boxplot(ell
+	dd = {}
+	for e in el:
+		di = float(e['distance'])
+		dd.setdefault(e['sport'], []).append(di)
+	
+	dl = []
+	dk = []
+	for k,v in dd.items():
+		dk.append(k)
+		dl.append(v)
+	
+	print("DKT {0}".format(dk))
+	#ax.boxplot(dd)
+	ax.boxplot(dl)
+	
+	ax.set_xticklabels( dk)
+	ax.set_ylabel('Distance')
+	fig.suptitle("Whisker")
+	
 	canvas = FigureCanvas(fig)
 	response = django.http.HttpResponse(content_type='image/png')
 	
