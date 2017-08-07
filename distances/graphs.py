@@ -15,6 +15,8 @@ import matplotlib.cm as cm
 import matplotlib.patches as mpatches
 
 import distances.json.sports as spo
+
+from django.db.models import Min, Max
 #import PIL, PIL.Image, StringIO
 
 #def graphs(request, sport='Running'):
@@ -46,6 +48,7 @@ sport_list = [s[0] for s in sl]
 
 def graphs2(exercises):
 	
+	
 	fig = Figure()
 	ax = fig.add_subplot(111)
 	d = []
@@ -55,6 +58,9 @@ def graphs2(exercises):
 		d.append(e.distance)
 		t.append(e.time_as_hours)
 		cc.append(e.sport)
+	
+	
+	
 	
 	color_dict = get_color_dict()
 	try:
@@ -72,7 +78,9 @@ def graphs2(exercises):
 	
 	
 	fig.legend( recs, inds, 'right')
-	fig.suptitle("Scatter plot")
+	#fig.suptitle("Scatter plot")
+	title = get_date_title(exercises)
+	fig.suptitle(title)
 	
 	ax.set_xlabel('Distance')
 	ax.set_ylabel('Time')
@@ -102,6 +110,7 @@ def graph_dist_sum(exercises):
 	ax.set_xlabel('Date')
 	ax.set_ylabel('Cumulative distance')
 	
+	fig.suptitle(get_date_title(exercises))
 	canvas = FigureCanvas(fig)
 	response = django.http.HttpResponse(content_type='image/png')
 	
@@ -138,13 +147,12 @@ def box_plot(exercises, quant='distance'):
 		dk.append(k)
 		dl.append(v)
 	
-	print("DKT {0}".format(dk))
 	#ax.boxplot(dd)
 	ax.boxplot(dl)
 	
 	ax.set_xticklabels( dk)
 	ax.set_ylabel('Distance')
-	fig.suptitle("Whisker")
+	fig.suptitle("Whisker {0}".format(get_date_title(exercises)))
 	
 	canvas = FigureCanvas(fig)
 	response = django.http.HttpResponse(content_type='image/png')
@@ -166,4 +174,14 @@ def get_sport_list():
 	sport_list = [s[0] for s in sl]	
 	return sport_list
 	
+def get_date_title(exercises):
+	""" Return min and max dates of exercises as string"""
+	""" Format mindate - maxdate """
+	mindate = exercises.aggregate(Min('date'))
+	mindates = mindate['date__min']
+	maxdate = exercises.aggregate(Max('date'))
+	maxdates = maxdate['date__max']
 	
+	retval = mindates.strftime("%d.%m.%y") + '-' + maxdates.strftime("%d.%m.%y")
+	return retval
+	#return str(mindates) + '-' + str(maxdates)
