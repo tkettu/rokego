@@ -188,7 +188,18 @@ def new_exercise(request):
 def stats(request):
 	""" Display different records"""
 	context = {}
-	exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
+	
+	#TODO this not good
+	#defyear = 2017
+	data = request.GET.copy()
+	if len(data) == 0:
+		defyear = datetime.now().year
+	else:
+		defyear = request.GET.get('year')
+	exercises = Exercise.objects.filter(owner=request.user, date__year=defyear).all().order_by('-date')
+	
+	
+	#filters = MyFilterSet(data)
 	
 	filter = RecordFilter(request.GET, queryset = exercises)
 	filter.form.helper = RecordFilterFormHelper()
@@ -202,7 +213,7 @@ def stats(request):
 	#for d in ddays:
 	#	re0 = rec.longest_period(filter.qs, days=d)
 	#	recs.append(re0)
-	
+	context['year'] = filter.qs.aggregate(Sum('distance'))['distance__sum']
 	weeks = rec.week_results(filter.qs)
 	#recs = rec.longest_period(request.user, days=7, sport='Running')
 	context['filter'] = filter

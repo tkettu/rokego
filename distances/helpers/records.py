@@ -119,6 +119,7 @@ def month_results(exercises):
 	return tot
 	
 	#return monthtotals
+#def year_result(exercises, year):
 	
 def get_most_common(exercises, n=3):
 	""" Get n most common sports """

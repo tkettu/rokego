@@ -199,6 +199,7 @@ class RecordFilterFormHelper(FormHelper):
 			Div(
 				Div('sport', css_class='col-md-2',),
 				Div('sub_sport', css_class='col-md-2',),
+				Div('year', css_class='col-md-2',),
 				#Div('days', css_class='col-md-2',),
 				css_class='row'
 			),
