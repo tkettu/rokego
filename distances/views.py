@@ -192,10 +192,14 @@ def stats(request):
 	#TODO this not good
 	#defyear = 2017
 	data = request.GET.copy()
+	#print("JA DATA OON {0}".format(data['year']))
 	if len(data) == 0:
+		defyear = datetime.now().year
+	elif data['year'] == '':
 		defyear = datetime.now().year
 	else:
 		defyear = request.GET.get('year')
+	print("TASSA {0}".format(defyear))
 	exercises = Exercise.objects.filter(owner=request.user, date__year=defyear).all().order_by('-date')
 	
 	
@@ -213,7 +217,9 @@ def stats(request):
 	#for d in ddays:
 	#	re0 = rec.longest_period(filter.qs, days=d)
 	#	recs.append(re0)
+	context['yearnro'] = defyear
 	context['year'] = filter.qs.aggregate(Sum('distance'))['distance__sum']
+	context['yeartime'] = Stats.totaltime(filter.qs)#filter.qs.aggregate(Sum('time_as_hours'))['time_as_hours__sum']
 	weeks = rec.week_results(filter.qs)
 	#recs = rec.longest_period(request.user, days=7, sport='Running')
 	context['filter'] = filter

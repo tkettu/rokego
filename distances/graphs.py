@@ -71,6 +71,11 @@ def graphs2(exercises):
 	
 	recs = []
 	inds = list(set(cc))
+	#if len(inds) > 1:
+	#	sl = get_sport_list()
+	#else:
+	#	sl = get_sub_sport_list()
+	#	inds 
 	sl = get_sport_list()
 	
 	for i in inds:#range(0,len(set(cc))):  # legend color for unique sport values

@@ -3,8 +3,10 @@
 {% load crispy_forms_tags %}
 
 {% block header %}
-<button class="btn btn-info" onclick="showElement('id_filter_set')">Filters</button>
-<p>Totals year: {{ year }} </p>
+<div>
+<button class="btn btn-info" onclick="showElement('id_filter_set')">Filters</button> 
+
+</div>
 {% endblock header %}
 
 {% block content %}
@@ -21,6 +23,9 @@
   <div id="id_filter_set" style="display: none">
     {% crispy filter.form filter.form.helper %}
   </div>
+  
+  <p>Totals {{ yearnro }}: {{ year }} km and {{ yeartime }} hours </p>
+  
   <table style="width:100%">
    
 	  <tr>
@@ -40,7 +45,7 @@
 	  </tr>
 	 {% empty %}
 	   <tr>
-	     <td>No exercises recorded yet.</td>
+	     <td>No exercises recorded {{ yearnro }}.</td>
 	  </tr>
 	 {% endfor %} 
 	 <tr class="blank_row">
@@ -63,7 +68,7 @@
 	  </tr>
 	 {% empty %}
 	   <tr>
-	     <td>No exercises recorded yet.</td>
+	     <td>No exercises recorded {{ yearnro }}.</td>
 	  </tr>
 	 {% endfor %} 
 	 
