@@ -66,6 +66,7 @@ def graphs2(exercises):
 	recs = []
 	inds = list(set(cc))
 	
+	
 	nsports = len(inds)
 	
 	
@@ -82,6 +83,9 @@ def graphs2(exercises):
 	else:
 		s_type = inds[0]
 		ccf = make_ssport_list(cc2, s_type)
+		inds2 = list(set(ccf))
+		#inds2[0] = s_type
+		
 		sl = get_sub_sport_list(s_type)
 		
 		
@@ -93,13 +97,18 @@ def graphs2(exercises):
 		
 		ax.scatter(d,t)
 		
-	for i in sl:#range(0,len(set(cc))):  # legend color for unique sport values
-		recs.append(mpatches.Rectangle((0,0),1,1,fc=color_list[sl.index(i)]))
 	
 	
-	#fig.legend( recs, inds, 'right')
+	if nsports > 1:
+		for i in inds:#range(0,len(set(cc))):  # legend color for unique sport values
+			recs.append(mpatches.Rectangle((0,0),1,1,fc=color_list[sl.index(i)]))
+		fig.legend( recs, inds, 'right')
+	else:
+		for i in inds2:
+			recs.append(mpatches.Rectangle((0,0),1,1,fc=color_list[sl.index(i)]))
+		fig.legend( recs, inds2, 'right')
 	
-	fig.legend( recs, sl, 'right')
+	#fig.legend( recs, sl, 'right')
 	#fig.suptitle("Scatter plot")
 	title = get_date_title(exercises)
 	fig.suptitle(title)
