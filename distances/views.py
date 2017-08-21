@@ -110,7 +110,7 @@ def exercises(request):
 		
 		if request.POST.get('delete'):
 			# TODO, implement working multi deleta
-			#print(request.POST.getlist('checks'))
+			
 			items = request.POST.getlist('checks')
 	
 		modaln = new_exercise_modal(request, ret_url)
@@ -192,14 +192,14 @@ def stats(request):
 	#TODO this not good
 	#defyear = 2017
 	data = request.GET.copy()
-	#print("JA DATA OON {0}".format(data['year']))
+	
 	if len(data) == 0:
 		defyear = datetime.now().year
 	elif data['year'] == '':
 		defyear = datetime.now().year
 	else:
 		defyear = request.GET.get('year')
-	print("TASSA {0}".format(defyear))
+	
 	exercises = Exercise.objects.filter(owner=request.user, date__year=defyear).all().order_by('-date')
 	
 	
@@ -314,10 +314,10 @@ def graphs(request):
 	reqgets = request.GET.getlist('sport')
 	reqgetsD = request.GET.get('startDate')
 	reqgeteD = request.GET.get('endDate')
-	print("JA {0}".format(request.GET.get('graphType')))
+	
 	reqgetGT = request.GET.get('graphType')
 	context['reqget'] = set_image_filter(reqgets, reqgetsD, reqgeteD, reqgetGT)
-	print(context['reqget'])
+	
 	
 	#context = {'graph': 'There is distance-time graph etc.'}
 	#context['img'] = imag
@@ -328,7 +328,7 @@ def graphs(request):
 	#return response
 
 def set_image_filter(sp="", sd="", ed="", gt="s"):
-	print("TYYYPPI {0}".format(type(sd)))
+	
 	sd = str(sd)
 	ed = str(ed)
 	if (sp == "") &  (sd == "") & (ed == ""):

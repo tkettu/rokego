@@ -37,7 +37,7 @@ class ExerciseTable(tables.Table):
 	def get_bottom_pinned_data(self):
 		""" """
 		try:
-			print("TASSA ON " + str(self.data))
+			
 			l = len(self.data)
 			
 			td = self.count_dist(self.data)

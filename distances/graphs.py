@@ -43,46 +43,63 @@ from django.db.models import Min, Max
 
 
 color_list = ['b', 'g', 'r', 'c', 'm', 'y', 'black', 'brown', 'purple', 'gold', 'darkgray', 'azure']
-sl = spo.get_sport_choices()
-sport_list = [s[0] for s in sl]
+#sl = spo.get_sport_choices()
+#sport_list = [s[0] for s in sl]
 
 def graphs2(exercises):
-	
+	""" Scatter (time-distance) plot from exercises"""
+	""" TODO: if one sport --> Diff colors for sports type (sub sports)"""
 	
 	fig = Figure()
 	ax = fig.add_subplot(111)
 	d = []
 	t = []
 	cc = []
+	cc2 = []
 	for e in exercises:
 		d.append(e.distance)
 		t.append(e.time_as_hours)
 		cc.append(e.sport)
+		cc2.append(e.sub_sport)
 	
-	
-	
-	
-	color_dict = get_color_dict()
-	try:
-		ax.scatter(d,t, c=[ color_dict[i] for i in cc])
-	except KeyError:
-		# plot without colors
-		ax.scatter(d,t)
 	
 	recs = []
 	inds = list(set(cc))
+	
+	nsports = len(inds)
+	
+	
+	color_dict = get_color_dict(inds)
 	#if len(inds) > 1:
 	#	sl = get_sport_list()
 	#else:
 	#	sl = get_sub_sport_list()
 	#	inds 
-	sl = get_sport_list()
-	
-	for i in inds:#range(0,len(set(cc))):  # legend color for unique sport values
+	if nsports > 1:
+		sl = get_sport_list()
+		ccf = cc
+		
+	else:
+		s_type = inds[0]
+		ccf = make_ssport_list(cc2, s_type)
+		sl = get_sub_sport_list(s_type)
+		
+		
+	try:
+		#ax.scatter(d,t, c=[ color_dict[i] for i in cc])
+		ax.scatter(d,t, c=[ color_dict[i] for i in ccf])
+	except KeyError:
+		# plot without colors
+		
+		ax.scatter(d,t)
+		
+	for i in sl:#range(0,len(set(cc))):  # legend color for unique sport values
 		recs.append(mpatches.Rectangle((0,0),1,1,fc=color_list[sl.index(i)]))
 	
 	
-	fig.legend( recs, inds, 'right')
+	#fig.legend( recs, inds, 'right')
+	
+	fig.legend( recs, sl, 'right')
 	#fig.suptitle("Scatter plot")
 	title = get_date_title(exercises)
 	fig.suptitle(title)
@@ -166,11 +183,16 @@ def box_plot(exercises, quant='distance'):
 	return response
 	
 	
-def get_color_dict():
-	sport_list = get_sport_list()
+def get_color_dict(sports):
+	if len(sports) > 1:
+		sport_list = get_sport_list()
+	else:
+		sport_list = get_sub_sport_list(sports[0])
+		
 	cd = {}
 	for i in range(len(sport_list)):
 		cd[sport_list[i]] = color_list[i]
+	
 	
 	return cd
 
@@ -178,6 +200,25 @@ def get_sport_list():
 	sl = spo.get_sport_choices()
 	sport_list = [s[0] for s in sl]	
 	return sport_list
+
+def get_sub_sport_list(s):
+	sl = spo.getFieldChoices(key_field=s)
+	
+	sport_list = [s[0] for s in sl]	
+	sport_list[0] = s
+	
+	return sport_list
+
+def make_ssport_list(ll, s):
+	""" Fills empty and non-rights values in list ll with sport s"""
+	slist = get_sub_sport_list(s)
+	nlist = []
+	for i in ll:
+		if (i not in slist) | (i == ""):
+			nlist.append(s)
+		else:
+			nlist.append(i)
+	return nlist
 	
 def get_date_title(exercises):
 	""" Return min and max dates of exercises as string"""

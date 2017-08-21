@@ -2,8 +2,9 @@
     "Running": [" ","Road running","Trail running", "Cross country running", "Nordic running"],
     "Skiing": [" ","Classic", "Skate skiing", "Ski touring"],
     "Walking": [" ", "Hiking", "Nordic walking", "Dog walking"],
-    "Cycling": [" ", "Road", "Mountain", "Track"],
+    "Cycling": [" ", "Road", "Mountain", "Track", "Indoor"],
     "Swimming": [" ", "Open water", "Pool"],
 	"Rowing": [" "],
+	"Rollers":  [" ", "Roller blades", "Roller skiing"],
 	"Other": [" "]
 }

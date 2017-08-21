@@ -133,7 +133,7 @@ class EditExerciseForm(ExerciseForm):
 		#self._key_field = kwargs.pop('sport', None)
 		
 		#logger.warning('SPORTTI ON {0}'.format(self._key_field))
-		#print('SPORTTI ON {0}'.format(ownsport))
+		
 		self.fields['sub_sport'].widget.choices = spo.getFieldChoices(self.ownsport)
 		#self.fields['sub_sport'].widget.choices = spo.getFieldChoices(self._key_field)
 		self.helper.layout = Layout(
