@@ -29,12 +29,15 @@ class Exercise(models.Model):
 	
 	sub_sport = models.CharField(max_length=25, default='')
 	#time = models.TimeField()
-	hours = irf(min_value=0, max_value=500, default=0)
-	minutes = irf(min_value=0, max_value=59, default=0)
+	#hours = irf(min_value=0, max_value=500, default=0)
+	#minutes = irf(min_value=0, max_value=59, default=0)
+	hours = irf(min_value=0, max_value=500)
+	minutes = irf(min_value=0, max_value=59)
 	#seconds = irf(min_value=0, max_value=59, default=0)
 	
 	
-	distance = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+	#distance = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+	distance = models.DecimalField(max_digits=6, decimal_places=2)
 	date = models.DateField(default=datetime.now)
 	
 	#testtime = models.TimeField(default=time(0,0,0), blank=True)

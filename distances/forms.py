@@ -94,11 +94,13 @@ class ExerciseForm(forms.ModelForm):
 			widget = forms.Select()
 		)
 		self.fields['sub_sport'].widget.choices = spo.getFieldChoices(owndefault)
-		
 		self.helper.label_class = 'col-sm-2'
 		self.helper.field_class = 'col-sm-10'
 		#self.fields['sub_sport'].required = False
 		self.fields['text'].required = False
+		self.fields['hours'].required = False
+		self.fields['minutes'].required = False
+		self.fields['distance'].required = False
 		self.helper.layout = Layout(
 			exercise_layout,
 		
@@ -121,6 +123,9 @@ class ExerciseForm(forms.ModelForm):
 		widgets = {
 		    'date': forms.DateInput(attrs={'class': 'datepicker'}),
 		    'text': forms.Textarea(attrs={'cols': 80}),
+		    'hours': forms.NumberInput(attrs={'placeholder': 0}),
+		    'minutes': forms.NumberInput(attrs={'placeholder': 0}),
+		    'distance': forms.NumberInput(attrs={'placeholder': 0}),
 		}
 		
 		

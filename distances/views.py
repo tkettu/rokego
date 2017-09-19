@@ -140,6 +140,7 @@ def new_exercise_modal(request, ret_url):
 	if form.is_valid():
 		new_exercise = form.save(commit=False)
 		new_exercise.owner = request.user
+		check_numberfields(new_exercise)
 		new_exercise.save()
 		
 		
@@ -152,7 +153,15 @@ def new_exercise_modal(request, ret_url):
 			isForm = True
 			#return HttpResponseRedirect(reverse('distances:new_exercise'))
 	return [form, isForm, ret_url]
-			
+
+def check_numberfields(ex):
+	if ex.hours is None:
+		ex.hours = 0
+	if ex.minutes is None:
+		ex.minutes = 0
+	if ex.distance is None:
+		ex.distance = 0
+		
 @login_required	
 def new_exercise(request):
 	"""Add a new exercise."""
@@ -166,6 +175,7 @@ def new_exercise(request):
 		if form.is_valid():
 			new_exercise = form.save(commit=False)
 			new_exercise.owner = request.user
+			check_numberfields(new_exercise)
 			new_exercise.save()
 			
 			logger.warning(request.POST)
