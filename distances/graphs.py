@@ -45,6 +45,9 @@ from django.db.models import Min, Max
 color_list = ['b', 'g', 'r', 'c', 'm', 'y', 'black', 'brown', 'purple', 'gold', 'darkgray', 'azure']
 #sl = spo.get_sport_choices()
 #sport_list = [s[0] for s in sl]
+dist_label = 'distance (km)'
+time_label = 'time (h)'
+
 
 def graphs2(exercises):
 	""" Scatter (time-distance) plot from exercises"""
@@ -113,8 +116,8 @@ def graphs2(exercises):
 	title = get_date_title(exercises)
 	fig.suptitle(title)
 	
-	ax.set_xlabel('Distance')
-	ax.set_ylabel('Time')
+	ax.set_xlabel(dist_label)
+	ax.set_ylabel(time_label)
 	#ax.get_xaxis().get_major_formatter().set_scientific(False)
 	
 	ax.get_xaxis().get_major_formatter().set_useOffset(False)
@@ -135,12 +138,13 @@ def graph_dist_sum(exercises):
 	
 	dist = np.array([e.distance for e in exes])
 	dat = [e.date for e in exes]
+	
 	cum_sum = np.cumsum(dist)
 	
 	ax.plot(dat,cum_sum)
 	ax.set_xlabel('Date')
-	ax.set_ylabel('Cumulative distance')
-	
+	ax.set_ylabel('Cumulative distance (km)')
+	fig.autofmt_xdate()
 	fig.suptitle(get_date_title(exercises))
 	canvas = FigureCanvas(fig)
 	response = django.http.HttpResponse(content_type='image/png')
@@ -182,7 +186,7 @@ def box_plot(exercises, quant='distance'):
 	ax.boxplot(dl)
 	
 	ax.set_xticklabels( dk)
-	ax.set_ylabel('Distance')
+	ax.set_ylabel(dist_label)
 	fig.suptitle("Whisker {0}".format(get_date_title(exercises)))
 	
 	canvas = FigureCanvas(fig)
