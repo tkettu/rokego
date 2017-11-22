@@ -259,17 +259,7 @@ def get_exercises(names, cur_user):
 
     return exercises
 
-
-def set_exercise_name(name):
-    exername = name
-
-
-def get_exercise_name():
-    return exercise_name
-
-
 @login_required
-# def exercise(request, exercisename):
 def exercise(request, exercisename):
     """Show single sport and its totals."""
 
@@ -281,11 +271,18 @@ def exercise(request, exercisename):
     return render(request, 'distances/exercises.html', context)
 
 
+######## GRAPHS #########
+
 # pattern for splitting multiple sports and dates from graphs to image
 ptr = 'AND'
 sptr = 'SDATE'
 eptr = 'EDATE'
+gptr = 'GTYPE'
+default_graph = ''
 
+def set_default_graph(graph_type):
+    global default_graph
+    default_graph = graph_type
 
 @login_required
 def graphs(request):
@@ -294,69 +291,65 @@ def graphs(request):
 
     exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
 
-    filter = GraphFilter(request.GET, queryset=exercises)
-    filter.form.helper = GraphFilterFormHelper()
-    # commons = rec.get_most_common(exes)
-    # response = gra.graphs(request)
-    # image(request, filter.qs)
+    graph_filter = GraphFilter(request.GET, queryset=exercises)
+    graph_filter.form.helper = GraphFilterFormHelper()
 
-    # imag = gra.graphs2(filter.qs)
-    context['filter'] = filter
-    # context['exercises'] = filter.qs
+    context['filter'] = graph_filter
 
-    # reqget = request.GET.getlist('sport')
-    reqgets = request.GET.getlist('sport')
-    reqgetsD = request.GET.get('startDate')
-    reqgeteD = request.GET.get('endDate')
+    sport_request = request.GET.getlist('sport')
+    start_date_req = request.GET.get('startDate')
+    end_date_req = request.GET.get('endDate')
 
-    reqgetGT = request.GET.get('graphType')
-    context['reqget'] = set_image_filter(reqgets, reqgetsD, reqgeteD, reqgetGT)
+    graph_type = request.GET.get('graphType')
 
-    # context = {'graph': 'There is distance-time graph etc.'}
-    # context['img'] = imag
+    if (graph_type != 'e'):
+        set_default_graph(graph_type)
 
-    # context['graph'] = gra.graphs2(filter.qs)
-    # context = {'graph': commons}
+    context['image'] = set_image_filter(sport_request, start_date_req, end_date_req, graph_type)
+
     return render(request, 'distances/graphs.html', context)
 
 
-# return response
-
-def set_image_filter(sp="", sd="", ed="", gt="s"):
-    sd = str(sd)
-    ed = str(ed)
-    if (sp == "") & (sd == "") & (ed == ""):
-        reqget = 'None'
+def set_image_filter(sport="", start_date="", end_date="", graph_type="s"):
+    start_date = str(start_date)
+    end_date = str(end_date)
+    if (sport == "") & (start_date == "") & (end_date == ""):
+        ret_str = 'None'
     else:
-        if len(sp) != 0:
+        if len(sport) != 0:
             req = ''
-            for i in sp:
+            for i in sport:
                 req = req + i + ptr
-            reqget = req + sptr + sd + eptr + ed
+            ret_str = req + sptr + start_date + eptr + end_date
         else:
-            # context['reqget'] = None
-            reqget = sptr + sd + eptr + ed
-    if isinstance(gt, str):
-        return reqget + "GTYPE" + gt
+            ret_str = sptr + start_date + eptr + end_date
+
+    if not isinstance(default_graph, str):
+        if isinstance(graph_type,str):
+            return ret_str + gptr + graph_type
+        else:
+            return ret_str + gptr + "s"
     else:
-        return reqget + "GTYPEs"
+        return ret_str + gptr + default_graph
 
 
 @login_required
 def image(request, filters):
-    # exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
-    # exercises = Exercise.objects.filter(owner=request.user, sport=filters['sport']).all().order_by('-date')
+    """Build image by filters
+        Format of '<Sport1>ptr<Sport2>ptr...<SportN>ptr+sptr<start_date>sptr<end_date>gptr<t>'
+        We split filters for sports, dates and graphtype and call corresponding graph with filters"""
+
     if (filters != 'None'):  # & (filters != ''):
-        filters = filters.split(ptr)
-        dates = filters[-1]
-        filters = filters[:-1]
-        dates = dates.replace(sptr, eptr)
-        dates = dates.split(eptr)
+        sports = filters.split(ptr)         #  [<sport1>,<sport2>,...,<sportN>,sptr<start_date>eptr<end_date>gptr<t>]
+        dates = sports[-1]                  #  sptr<start_date>eptr<end_date>gptr<t>
+        sports = sports[:-1]                #  [<sport1>,<sport2>,...,<sportN>]
+        dates = dates.replace(sptr, eptr)   #  eptr<start_date>eptr<end_date>gptr<t>
+        dates = dates.split(eptr)           #  ['', <start_date>,<end_date>gptr<t>]
         # dates[0] is (hopefully) always ''
         sd = dates[1]
-        ed = dates[2]
+        ed = dates[2]                       #  <end_date>gptr<t>
 
-        gtype = ed.split("GTYPE")
+        gtype = ed.split(gptr)              #  [<end_date>,<t>]
         ed = gtype[0]
         gtype = gtype[1]
 
@@ -369,16 +362,14 @@ def image(request, filters):
             sd = date(ed.year, 1, 1)
         # sd = date(date.today().year, 1, 1)
 
-        if len(filters) != 0:
-            exercises = Exercise.objects.filter(owner=request.user, sport__in=filters,
+        if len(sports) != 0:
+            exercises = Exercise.objects.filter(owner=request.user, sport__in=sports,
                                                 date__range=[sd, ed]).all().order_by('-date')
         else:
             exercises = Exercise.objects.filter(owner=request.user,
                                                 date__range=[sd, ed]).all().order_by('-date')
     else:
         exercises = Exercise.objects.filter(owner=request.user).all().order_by('-date')
-    # filter = GraphFilter(request.GET, queryset = exercises)
-    # filter.form.helper = GraphFilterFormHelper()
 
     if gtype == 's':
         response = gra.graphs2(exercises)
@@ -388,17 +379,9 @@ def image(request, filters):
         response = gra.box_plot(exercises)
     else:
         response = gra.graphs2(exercises)
-    # response = gra.graphs2(filter.qs)
-    # response = gra.graphs2(f.qs)
-    # response = gra.graphs(request)
+
     return response
 
-
-# @login_required
-# def image(request):
-
-#	response = gra.graphs(request)
-#	return response
 
 def check_exercise_owner(exercise, user):
     if exercise.owner != user:

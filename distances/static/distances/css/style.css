@@ -55,7 +55,7 @@
 	color: black;
 }*/
 
-select[id=id_sport], select[id=id_sub_sport] {
+select[id=id_sport], select[id=id_sub_sport], select[id=id_graphtype] {
 	color: black;
 }
 

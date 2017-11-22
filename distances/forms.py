@@ -195,7 +195,10 @@ class GraphFilterFormHelper(FormHelper):
                 css_class='row'
             ),
         ),
-        HTML('<select value="Graph" name="graphType">\
+        HTML('<label for="id_graphtype" class="control-label ">\
+                Graph type\
+            </label><br/>'
+             '<select value="Graph" name="graphType" id="id_graphtype">\
 				<option value="e"></option>\
 				<option value="s">Scatter</option>\
 				<option value="c">Cumulative sum</option>\
