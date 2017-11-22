@@ -1,28 +1,25 @@
- {% extends "distances/base.html" %}
+{% extends "distances/base.html" %}
 {% load bootstrap3 %}
 {% load static %}
 
-
-
 {% block header %}
 	<script type="text/javascript">
-    json_data = {{ subsports|safe }};
-   
-</script>
+    	json_data = {{ subsports|safe }};   
+	</script>
 
-  <h2>Add new exercise</h2>
+	<h2>Add new exercise</h2>
 {% endblock header %} 
 
- {% block content %}
- 
-			 {% if messages %}
-		 <ul class="messages">
-			{% for message in messages %}
+{% block content %}
+
+	{% if messages %}
+		<ul class="messages">
+		{% for message in messages %}
 			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-			{% endfor %}
-		 </ul>
-		 {% endif %}  
-			  {% load crispy_forms_tags %}
-			  {% crispy form %}
+		{% endfor %}
+		</ul>
+	{% endif %}  
+		{% load crispy_forms_tags %}
+		{% crispy form %}
 	
  {% endblock content %}

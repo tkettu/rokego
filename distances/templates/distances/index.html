@@ -8,41 +8,35 @@
   </div>
 {% endblock header %}
 
-
-
 {% block content %}
-  
-  <!--<h2 id ='id_centered_text'>
-    Mark your kilometers run, skied, cycled.
-  </h2>-->
-    
-	  {% if user.is_authenticated %}
-		 {% include "distances/new_exersise2.html" %}
-		<div id='id_centered_text'>
+
+	{% if user.is_authenticated %}
+	{% include "distances/new_exersise2.html" %}
+	<div id='id_centered_text'>
+	
+		<p>  <a class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal">Add new exercise</a></p> 
+	
+		<p>Kilometers this week: {{  dist }}; month {{ distm }} </p> 
+		<p>Time this week: {{ time }}; month {{ timem }}</p>
+			
+		<p>Latest exercises</p>
+		{% for e in exercises %}
+			<p>{{ e }}</p>
+		{% empty %}
+			<p>No exercises this week yet.</p>
+		{% endfor %}
+			
 		
-		    <p>  <a class="btn btn-large btn-info" data-toggle="modal"  data-target="#exerciseModal">Add new exercise</a></p> 
+	</div>
 		
-			 <p>Kilometers this week: {{  dist }}; month {{ distm }} </p> 
-			  <p>Time this week: {{ time }}; month {{ timem }}</p>
-			 
-			 <p>Latest exercises</p>
-			 {% for e in exercises %}
-			    <p>{{ e }}</p>
-			{% empty %}
-				<p>No exercises this week yet.</p>
-			{% endfor %}
-				
-		  
-		</div>
-		 
-	  {% else %}
-	  <!-- <div id='id_centered_text'>
-	    
-		 <a href="{% url 'users:login' %}">login</a>  or <a href="{% url 'users:register' %}">register</a> 
-		 
-		</div>
-		-->
-	   {% endif %}
+	{% else %}
+	<!-- <div id='id_centered_text'>
+		
+		<a href="{% url 'users:login' %}">login</a>  or <a href="{% url 'users:register' %}">register</a> 
+		
+	</div>
+	-->
+	{% endif %}
 	   
 	
 {% endblock content %}
