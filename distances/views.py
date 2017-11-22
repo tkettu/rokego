@@ -259,6 +259,7 @@ def get_exercises(names, cur_user):
 
     return exercises
 
+
 @login_required
 def exercise(request, exercisename):
     """Show single sport and its totals."""
@@ -280,9 +281,11 @@ eptr = 'EDATE'
 gptr = 'GTYPE'
 default_graph = ''
 
+
 def set_default_graph(graph_type):
     global default_graph
     default_graph = graph_type
+
 
 @login_required
 def graphs(request):
