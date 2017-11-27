@@ -82,11 +82,7 @@ def graphs2(exercises):
     ax.get_xaxis().get_major_formatter().set_useOffset(False)
     ax.get_yaxis().get_major_formatter().set_useOffset(False)
     # fig.axes(x='distance', y='time')
-    canvas = FigureCanvas(fig)
-    response = django.http.HttpResponse(content_type='image/png')
-
-    canvas.print_png(response)
-    return response
+    return graph_response(fig)
 
 
 def graph_dist_sum(exercises):
@@ -106,45 +102,65 @@ def graph_dist_sum(exercises):
     ax.set_ylabel('Cumulative distance (km)')
     fig.autofmt_xdate()
     fig.suptitle(get_date_title(exercises))
-    canvas = FigureCanvas(fig)
-    response = django.http.HttpResponse(content_type='image/png')
 
-    canvas.print_png(response)
-    return response
+    return graph_response(fig)
 
 
 def box_plot(exercises, quant='distance'):
     """Returns boxplot (whiskers) from distances (or time) of exercises """
 
-    # exercises to list of sport name and distances
-    exercise_list = list(
-		exercises.values('sport', quant))
+    # exercises to list of sport name and distances/times
+    # exercise_list = list(
+    #     exercises.values('sport', quant))
+
+
+    quant_list = {}
+
+    if(quant == 'distance'):
+        for e in exercises:
+            quant_list.setdefault(e.sport,[]).append(float(e.distance))
+    else:
+        for e in exercises:
+            quant_list.setdefault(e.sport,[]).append(float(e.time_as_hours))
+
+    quantities = []
+    names = []
+    for k, v in quant_list.items():
+        names.append(k)
+        quantities.append(v)
+
+    # ax.boxplot(distances)
 
     fig = Figure()
     ax = fig.add_subplot(111)
-
-    # ax.boxplot(ell
-    distance_list = {}
-    for e in exercise_list:
-        #di = float(e['distance'])
-        distance_list.setdefault(e['sport'], []).append(float(e['distance']))
-
-    distances = []
-    names = []
-    for k, v in distance_list.items():
-        names.append(k)
-        distances.append(v)
-
-    # ax.boxplot(distances)
-    ax.boxplot(distances)
+    ax.boxplot(quantities)
 
     ax.set_xticklabels(names)
-    ax.set_ylabel(dist_label)
+    ylabel =  dist_label if quant=='distance' else time_label
+
+    ax.set_ylabel(ylabel)
     fig.suptitle("Whisker {0}".format(get_date_title(exercises)))
 
+    return graph_response(fig)
+
+
+def graph_histogram(exercises, quant='distance'):
+    """Histogram of quantity for distances/times"""
+
+    dist = np.array([float(e.distance) for e in exercises])
+    fig = Figure()
+    ax = fig.add_subplot(111)
+    n,bins, patches = ax.hist(dist, 50, facecolor='green', alpha=0.75)
+    xlabel = dist_label if quant == 'distance' else time_label
+    ax.grid(True)
+    ax.set_xlabel(xlabel)
+
+    return graph_response(fig)
+
+
+def graph_response(fig):
     canvas = FigureCanvas(fig)
     response = django.http.HttpResponse(content_type='image/png')
-
     canvas.print_png(response)
     return response
 

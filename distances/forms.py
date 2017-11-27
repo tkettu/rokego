@@ -203,6 +203,8 @@ class GraphFilterFormHelper(FormHelper):
 				<option value="s">Scatter</option>\
 				<option value="c">Cumulative sum</option>\
 				<option value="b">Box plot</option>\
+                <option value="bt">Box plot Time</option>\
+                <option value="h">Histogram</option>\
 			  </select>'
              ),
 

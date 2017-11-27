@@ -309,6 +309,9 @@ def graphs(request):
         set_default_graph(graph_type)
 
     context['image'] = set_image_filter(sport_request, start_date_req, end_date_req, graph_type)
+    if graph_type == 'b':
+        context['image2'] = set_image_filter(sport_request, start_date_req, end_date_req, 'bt')
+        print(context['image2'])
 
     return render(request, 'distances/graphs.html', context)
 
@@ -379,7 +382,11 @@ def image(request, filters):
     elif gtype == 'c':
         response = gra.graph_dist_sum(exercises)
     elif gtype == 'b':
-        response = gra.box_plot(exercises)
+        response = gra.box_plot(exercises, quant='distance')
+    elif gtype == 'bt':
+        response = gra.box_plot(exercises, quant='time_as_hours')
+    elif gtype == 'h':
+        response = gra.graph_histogram(exercises)
     else:
         response = gra.graphs2(exercises)
 
