@@ -309,9 +309,10 @@ def graphs(request):
         set_default_graph(graph_type)
 
     context['image'] = set_image_filter(sport_request, start_date_req, end_date_req, graph_type)
-    if graph_type == 'b':
-        context['image2'] = set_image_filter(sport_request, start_date_req, end_date_req, 'bt')
-        print(context['image2'])
+
+    #Todo distance and time images side by side for boxplot, histogram etc.
+    #if graph_type == 'b':
+    #    context['image2'] = set_image_filter(sport_request, start_date_req, end_date_req, 'bt')
 
     return render(request, 'distances/graphs.html', context)
 
