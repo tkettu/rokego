@@ -10,7 +10,15 @@ Clone and setup Rokego at local machine
 ~/path/to$ cd rokego
 ~/path/to/rokego$ python3 -m venv ll_env 
 ~/path/to/rokego$ source ll_env/bin/activate
-~/path/to/rokego$ pip install -r requirements.txt
+```
+or for Windows
+```
+...
+...\rokego> ll_env\Scripts\activate.bat
+```
+and continue for all OS as
+```
+(ll_env)~/path/to/rokego$ pip install -r requirements.txt
 ```
 
 ### Local settings
@@ -27,12 +35,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ### Database
 Initialize database
 ```
-~/path/to/rokego$ python manage.py makemigrations
-~/path/to/rokego$ python manage.py migrate
+(ll_env)~/path/to/rokego$ python manage.py makemigrations
+(ll_env)~/path/to/rokego$ python manage.py migrate
 ```
 And run on localhost to verify that everything works.
 ```
-~/path/to/rokego$ python manage.py runserver
+(ll_env)~/path/to/rokego$ python manage.py runserver
 ```
 
 ## License
