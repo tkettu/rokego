@@ -3,7 +3,13 @@
 Web-app for tracking endurance sports (running, cycling, skiing...). Excel-stylish tables, visualisations based for time-distance and weekly,
 monthly (yearly) stats for different sports.
 
-## Setup
+## Getting started
+
+### Requirements
+- Python (3+)
+- virtualenv
+
+### Setup
 Clone and setup Rokego at local machine
 ```
 ~/path/to$ git clone https://github.com/tkettu/rokego
