@@ -9,6 +9,7 @@ Clone and setup Rokego at local machine
 ~/path/to$ git clone https://github.com/tkettu/rokego
 ~/path/to$ cd rokego
 ~/path/to/rokego$ python3 -m venv ll_env 
+~/path/to/rokego$ source ll_env/bin/activate
 ~/path/to/rokego$ pip install -r requirements.txt
 ```
 
