@@ -11,9 +11,9 @@ Clone and setup Rokego at local machine
 ~/path/to/rokego$ python3 -m venv ll_env 
 ~/path/to/rokego$ source ll_env/bin/activate
 ```
-or for Windows
+or for Windows with python3 installed
 ```
-...
+...\rokego> python -m venv ll_env 
 ...\rokego> ll_env\Scripts\activate.bat
 ```
 and continue for all OS as
