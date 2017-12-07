@@ -28,6 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# For local 404, 500 test etc.
+#DEBUG = False
+
+#ALLOWED_HOSTS = ['localhost']
+# End for local
 
 # Application definition
 
@@ -65,7 +70,7 @@ ROOT_URLCONF = 'distance_tracker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'distance_tracker/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -5,6 +5,11 @@
   <h2>Sign up</h2>
   <form method="post">
     {% csrf_token %}
+     {% if no_form is not empty %}
+      Maximum number of users. If you want to use this app, contact <a href="mailto:rokegoteam@gmail.com?Subject=Rokego feedback" target="_top">
+      rokegoteam(at)gmail.com</a>
+      
+     {% else %}
       {% for field in form %}
       <p>
         {{ field.label_tag }}<br>
@@ -20,6 +25,7 @@
 	  
 	{% buttons %}
     <button type="submit" class="btn btn-primary">Sign up</button>
-	{% endbuttons %}
+  {% endbuttons %}
+  {% endif %}
   </form>
 {% endblock content%}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -187,8 +187,6 @@ def stats(request):
     """ Display different records"""
     context = {}
 
-    # TODO this not good
-    # defyear = 2017
     data = request.GET.copy()
 
     if len(data) == 0:
@@ -229,8 +227,8 @@ def stats(request):
 @login_required
 def edit_exercise(request, exercise_id):
     """Edit en existing entry"""
-    entry = Exercise.objects.get(id=exercise_id)
-
+    #entry = Exercise.objects.get(id=exercise_id)
+    entry = get_object_or_404(Exercise, id=exercise_id)
     cur_user = request.user
     check_exercise_owner(entry, cur_user)
     if request.method != 'POST':
@@ -299,6 +297,9 @@ def graphs(request):
 
     context['filter'] = graph_filter
 
+    #TODO exercises without repeat
+    #filtered_exercises = graph_filter.qs
+    #graph_type = request.POST.get('...') -> Front-endiin POST
     sport_request = request.GET.getlist('sport')
     start_date_req = request.GET.get('startDate')
     end_date_req = request.GET.get('endDate')
