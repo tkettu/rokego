@@ -81,3 +81,20 @@ table.sortable thead {
 	height: 10px;
 	/* background-color: #FFFFFF;*/
 }
+
+form.loginForm {
+  align-self: center; 
+}
+
+
+div.loginForm {
+  max-width: 450px;
+  align-self: center;
+  border: silver;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 3%;
+  border-color: rgb(250, 250, 250);
+  /*background-color: rgb(6, 0, 48);*/
+  margin: auto;
+}

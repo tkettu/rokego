@@ -14,6 +14,10 @@ from django.core.mail import EmailMessage
 
 from .forms import RegisterForm
 
+from distance_tracker.settings import DEBUG
+
+import os
+
 site_name = 'Rokego'
 register_enabled = False
 max_user_count = 17
@@ -29,7 +33,7 @@ def logout_view(request):
 def register(request):
     """Register a new user."""
     user_count = len(User.objects.all())
-    register_enabled = False if (user_count > max_user_count) else True
+    register_enabled = True if DEBUG else (False if (user_count > max_user_count) else True)
 
     if register_enabled:
         if request.method != 'POST':

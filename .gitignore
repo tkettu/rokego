@@ -7,3 +7,5 @@ extra_txtfiles/
 
 #local settings file
 local_settings.py
+
+.idea/
