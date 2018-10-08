@@ -25,7 +25,10 @@ class Exercise(models.Model):
     distance = models.DecimalField(max_digits=6, decimal_places=2)
     date = models.DateField(default=datetime.now)
 
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(
+                        User,
+                        on_delete=models.CASCADE,
+    )
 
     text = models.CharField(max_length=300, default='')
     average_speed = 0

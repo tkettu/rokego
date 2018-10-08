@@ -18,10 +18,10 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^users/', include('users.urls', namespace='users')),
-    url(r'^registration/', include('users.urls', namespace='registration')),  
-    url(r'^', include('distances.urls', namespace='distances')),
+    url(r'^users/', include(('users.urls', 'users'), namespace='users')),
+    url(r'^registration/', include(('users.urls', 'users'), namespace='registration')),
+    url(r'^', include(('distances.urls', 'distances'), namespace='distances')),
     
-    # Passwprd reset
+    # Password reset
     url(r'^', include('django.contrib.auth.urls')),
 ]
